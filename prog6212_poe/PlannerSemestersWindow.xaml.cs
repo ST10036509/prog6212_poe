@@ -28,5 +28,15 @@ namespace prog6212_poe
         {
 
         }
+
+        private void returnToMainMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void selectSemesterButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

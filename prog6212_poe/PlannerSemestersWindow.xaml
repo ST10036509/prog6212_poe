@@ -24,7 +24,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="265" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
@@ -49,6 +49,7 @@
             Source="{StaticResource h4u_icon_02_text_greenDrawingImage}"
         />
 
+        <!--Add Planner Title-->
         <TextBlock
             Grid.Column="2" Grid.Row="1"
             HorizontalAlignment="Center"
@@ -70,6 +71,7 @@
             X2="1"
         />-->
 
+        <!--Add a Title ListBox-->
         <ListBox
             Grid.Column="1" Grid.Row="2"
             Grid.ColumnSpan="3"
@@ -95,7 +97,7 @@
         
         <!-- List Of Semesters ListBox-->
         <ScrollViewer Grid.Column="1" Grid.Row="3"
-              Grid.ColumnSpan="3" Grid.RowSpan="3">
+              Grid.ColumnSpan="3" Grid.RowSpan="2">
 
             <ListBox x:Name="semestersListBox"
              HorizontalContentAlignment="Stretch"
@@ -116,6 +118,28 @@
             </ListBox>
 
         </ScrollViewer>
+
+        <!-- Return To Create Semester Button-->
+        <Button x:Name="returnToMainMenuButton" 
+            Grid.Column="1" Grid.Row="5" 
+            Content="Back" 
+            Margin="0,10,0,0"
+            Background="#ff3343" Foreground="WhiteSmoke"
+            FontSize="20" FontWeight="DemiBold"
+            BorderThickness="0"
+            Click="returnToMainMenuButton_Click" Cursor="Hand"
+        />
+
+        <!-- Return To Create Semester Button-->
+        <Button x:Name="selectSemesterButton" 
+            Grid.Column="3" Grid.Row="5" 
+            Content="Select" 
+            Margin="0,10,0,0"
+            Background="#77d17f" Foreground="WhiteSmoke"
+            FontSize="20" FontWeight="DemiBold"
+            BorderThickness="0"
+            Click="selectSemesterButton_Click" Cursor="Hand"
+        />
 
     </Grid>
 </Window>
