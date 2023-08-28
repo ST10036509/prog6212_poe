@@ -1,0 +1,87 @@
+﻿<Window x:Class="prog6212_poe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:prog6212_poe"
+        mc:Ignorable="d"
+        Icon="{StaticResource h4u_icon_02_text_whiteDrawingImage}"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Title="  HoursForYou" Height="450" Width="800">
+    <Grid>
+        
+        <!-- Setup Rows and Columns -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <!-- Set Background Image -->
+        <Grid.Background>
+            <ImageBrush ImageSource="assets/images/hours_4_you_background_01.png" 
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <!-- Add SVG Logo -->
+        <Image
+            Grid.Column="2" Grid.Row="1"
+            RenderOptions.BitmapScalingMode="HighQuality"
+            Stretch="Fill"
+            Width="100"
+            Height="auto"
+            VerticalAlignment="Top"
+            Margin="50,31.981,50,0"
+            HorizontalAlignment="Center"
+            Source="{StaticResource h4u_icon_02_text_greenDrawingImage}"
+        />
+
+        <!-- Add Semester Button -->
+        <Button x:Name="addSemesterButton" 
+        Grid.Column="2" Grid.Row="2" 
+        Content="New Semester" 
+        Margin="0,70,0,40"
+        Background="#77d17f" Foreground="WhiteSmoke"
+        FontSize="20"  FontWeight="DemiBold"
+        BorderThickness="0"
+        Click="AddSemesterButton_Click" Cursor="Hand"
+        />
+
+        <!--Open Recipe Book Button-->
+        <Button x:Name="plannerButton" 
+        Grid.Column="2" Grid.Row="3"
+        Content="Planner"
+        Margin="0,0,0,40"
+        Background="#77d17f" Foreground="WhiteSmoke"
+        FontSize="20" FontWeight="DemiBold"
+        BorderThickness="0"
+        Click="PlannerBookButton_Click" Cursor="Hand"
+        />
+
+        <!-- Exit Program Button-->
+        <Button x:Name="exitProgramButton" 
+        Grid.Column="2" Grid.Row="4" 
+        Content="Exit" 
+        Margin="0,0"
+        Background="#ff3343" Foreground="WhiteSmoke"
+        FontSize="20" FontWeight="DemiBold"
+        BorderThickness="0"
+        Click="ExitProgramButton_Click" Cursor="Hand"
+        />
+        
+    </Grid>
+</Window>
+<!--_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________-->
