@@ -66,17 +66,22 @@
             x:Name="modulesListView"
             Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="3" 
             VerticalAlignment="Stretch" 
-            BorderThickness="0" 
+            BorderThickness="0.5" 
+            MaxHeight="265"
             ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+            ScrollViewer.CanContentScroll="False"
             Cursor="Hand" 
-            Foreground="Black" FontWeight="Bold">
+            Opacity="0.75"
+            Foreground="Black" 
+            Background="#FFF9F4EE"
+            FontWeight="Bold">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Modules:" Width="618">
+                    <GridViewColumn Header="Modules:" Width="598">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Padding" Value="5"/>
-                                <Setter Property="BorderThickness" Value="1,1,1,1" />
+                                <Setter Property="BorderThickness" Value="0,0,0,0" />
                                 <Setter Property="BorderBrush" Value="Black" />
                                 <Setter Property="Background" Value="WhiteSmoke" />
                                 <Setter Property="Foreground" Value="#FF03A503"/>
@@ -91,7 +96,7 @@
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Padding" Value="5"/>
-                                <Setter Property="BorderThickness" Value="1,1,1,1" />
+                                <Setter Property="BorderThickness" Value="0,0,0,0" />
                                 <Setter Property="BorderBrush" Value="Black" />
                                 <Setter Property="Background" Value="WhiteSmoke" />
                                 <Setter Property="Foreground" Value="#FF03A503"/>

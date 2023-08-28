@@ -26,7 +26,7 @@ namespace prog6212_poe
         public PlannerSemestersWindow()
         {
             InitializeComponent();
-            List<string> test = new List<string>() {"1","2","3","4"};
+            List<string> test = new List<string>() {"1","2","3","4","5","6","7","8","9","1","2","3","4","5","6","7","8","9"};
             semestersListView.ItemsSource = test;
         }//end constructor
 

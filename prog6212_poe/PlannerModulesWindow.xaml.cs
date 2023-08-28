@@ -25,8 +25,8 @@ namespace prog6212_poe
         public PlannerModulesWindow()
         {
             InitializeComponent();
-            List<string> test2 = new List<string>() { "a", "b", "c", "d" };
-            this.modulesListView.ItemsSource = test2;
+            List<string> test = new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+            this.modulesListView.ItemsSource = test;
         }//end constructor
 
         //Disable The Window Close Button
