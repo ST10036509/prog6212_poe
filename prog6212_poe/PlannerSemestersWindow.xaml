@@ -77,9 +77,11 @@
                                 <Setter Property="BorderThickness" Value="1,1,1,1" />
                                 <Setter Property="BorderBrush" Value="Black" />
                                 <Setter Property="Background" Value="WhiteSmoke" />
+                                <Setter Property="Foreground" Value="#FF03A503"/>
                                 <Setter Property="FontFamily" Value="Segoe UI" />
-                                <Setter Property="FontWeight" Value="DemiBold" />
+                                <Setter Property="FontWeight" Value="Bold" />
                                 <Setter Property="FontSize" Value="15" />
+                                <Setter Property="Cursor" Value="Arrow" />
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>

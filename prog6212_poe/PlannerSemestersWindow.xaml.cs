@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace prog6212_poe
@@ -21,12 +22,13 @@ namespace prog6212_poe
     /// </summary>
     public partial class PlannerSemestersWindow : Window
     {
+        //Constructor
         public PlannerSemestersWindow()
         {
             InitializeComponent();
             List<string> test = new List<string>() {"1","2","3","4"};
             semestersListView.ItemsSource = test;
-        }
+        }//end constructor
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -55,18 +57,21 @@ namespace prog6212_poe
         }
         //dnd Disable The Window Close Button
 
+        //select a semester && open the modules selection window
         private void selectSemesterButton_Click(object sender, RoutedEventArgs e)
         {
             Window viewModulesWindow = new PlannerModulesWindow();
             viewModulesWindow.Show();
             this.Close();
-        }
+        }//end selectSemesterButton_Click method
 
+        //return to Main Menu page
         private void returnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
             Window mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
-        }
+        }//end returnToMainMenuButton_Click method
     }
 }
+//_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

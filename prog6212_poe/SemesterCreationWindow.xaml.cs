@@ -21,6 +21,7 @@ namespace prog6212_poe
     /// </summary>
     public partial class SemesterCreationWindow : Window
     {
+        //Constructor
         public SemesterCreationWindow()
         {
             InitializeComponent();

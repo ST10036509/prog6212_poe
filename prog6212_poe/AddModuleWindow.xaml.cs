@@ -21,6 +21,7 @@ namespace prog6212_poe
     /// </summary>
     public partial class AddModuleWindow : Window
     {
+        //Constructor
         public AddModuleWindow()
         {
             InitializeComponent();

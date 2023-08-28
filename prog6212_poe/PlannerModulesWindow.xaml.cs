@@ -21,12 +21,13 @@ namespace prog6212_poe
     /// </summary>
     public partial class PlannerModulesWindow : Window
     {
+        //Constructor
         public PlannerModulesWindow()
         {
             InitializeComponent();
             List<string> test2 = new List<string>() { "a", "b", "c", "d" };
             this.modulesListView.ItemsSource = test2;
-        }
+        }//end constructor
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -53,20 +54,23 @@ namespace prog6212_poe
             //disable the menu item
             EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
         }
-        //dnd Disable The Window Close Button
+        //end Disable The Window Close Button
 
+        //select a module && go to the module details window
         private void selectModuleButton_Click(object sender, RoutedEventArgs e)
         {
             Window moduleDetailsWindow = new PlannerModuleViewWindow();
             moduleDetailsWindow.Show();
             this.Close();
-        }
+        }//end selectModuleButton_Click method
 
+        //return to the semester view window
         private void returnToSemesterViewButton_Click(object sender, RoutedEventArgs e)
         {
             Window viewSemestersWindow = new PlannerSemestersWindow();
             viewSemestersWindow.Show();
             this.Close();
-        }
+        }//end returnToSemesterViewButton_Click method
     }
 }
+//_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

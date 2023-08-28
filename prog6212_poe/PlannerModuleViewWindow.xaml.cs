@@ -21,10 +21,11 @@ namespace prog6212_poe
     /// </summary>
     public partial class PlannerModuleViewWindow : Window
     {
+        //Constructor
         public PlannerModuleViewWindow()
         {
             InitializeComponent();
-        }
+        }//end constructor
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -50,8 +51,15 @@ namespace prog6212_poe
             var sysMenu = GetSystemMenu(hWnd.Handle, false);
             //disable the menu item
             EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
-        }
-        //dnd Disable The Window Close Button
+        }//end Disable The Window Close Button
 
+        //return to modules view page
+        private void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window viewModulesWindow = new PlannerModulesWindow();
+            viewModulesWindow.Show();
+            this.Close();
+        }//end returnToModulesViewButton_Click method
     }
 }
+//_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________
