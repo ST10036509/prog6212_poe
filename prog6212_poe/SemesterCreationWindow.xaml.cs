@@ -57,8 +57,8 @@ namespace prog6212_poe
         //open add module page
         private void AddModleButton_Click(object sender, RoutedEventArgs e)
         {
-            Window addModuleWin = new AddModuleWindow();
-            addModuleWin.Show();
+            Window addModuleWindow = new AddModuleWindow();
+            addModuleWindow.Show();
             this.Close();
         }//end AddModleButton_Click method
 

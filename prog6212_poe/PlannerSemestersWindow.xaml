@@ -60,15 +60,17 @@
             FontWeight="DemiBold"
         />
 
-        <ListView Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="3" 
-                  VerticalAlignment="Stretch" 
-                  BorderThickness="0" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                  Cursor="Hand" 
-                  Foreground="WhiteSmoke">
+        <ListView 
+            x:Name="semestersListView"
+            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="3" 
+            VerticalAlignment="Stretch" 
+            BorderThickness="0" 
+            ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+            Cursor="Hand" 
+            Foreground="Black" FontWeight="Bold">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Semesters:" Width="756">
+                    <GridViewColumn Header="Semesters:" Width="738">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Padding" Value="5"/>

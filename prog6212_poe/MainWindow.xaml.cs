@@ -57,16 +57,16 @@ namespace prog6212_poe
         //open semester page
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
-            Window createSemesterWin = new SemesterCreationWindow();
-            createSemesterWin.Show();
+            Window createSemesterWindow = new SemesterCreationWindow();
+            createSemesterWindow.Show();
             this.Close();
         }//end AddSemesterButton_Click method
 
         //open planner page
         private void PlannerBookButton_Click(object sender, RoutedEventArgs e)
         {
-            Window createSemesterWin = new PlannerSemestersWindow();
-            createSemesterWin.Show();
+            Window viewSemestersWindow = new PlannerSemestersWindow();
+            viewSemestersWindow.Show();
             this.Close();
         }//end PlannerBookButton_Click method
 
