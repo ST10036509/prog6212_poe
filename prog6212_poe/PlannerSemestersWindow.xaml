@@ -59,67 +59,33 @@
             Foreground="#FF565656"
             FontWeight="DemiBold"
         />
-        
-        <!--Add Dividor Line-->
-        <!--<Line 
-            Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" 
-            Margin="0,5,0,10"
-            Stretch="Fill" 
-            Stroke="#FF565656"
-            Opacity="0.7"
-            StrokeThickness="2"
-            X2="1"
-        />-->
 
-        <!--Add a Title ListBox-->
-        <ListBox
-            Grid.Column="1" Grid.Row="2"
-            Grid.ColumnSpan="3"
-            x:Name="titleListBox"
-            HorizontalContentAlignment="Stretch"
-            SelectionMode="Extended"
-            Background="WhiteSmoke"
-            BorderBrush="Black"
-            BorderThickness="0"
-            SelectionChanged="semestersListBox_SelectionChanged"
-            IsEnabled="False"
->
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="5"/>
-                    <Setter Property="BorderThickness" Value="1" />
-                    <Setter Property="BorderBrush" Value="Gray" />
-                    <Setter Property="Background" Value="WhiteSmoke" />
-                </Style>
-            </ListBox.ItemContainerStyle>
-            Semesters:
-        </ListBox>
-        
-        <!-- List Of Semesters ListBox-->
-        <ScrollViewer Grid.Column="1" Grid.Row="3"
-              Grid.ColumnSpan="3" Grid.RowSpan="2">
+        <ListView Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="3" 
+                  VerticalAlignment="Stretch" 
+                  BorderThickness="0" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                  Cursor="Hand" 
+                  Foreground="WhiteSmoke">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Semesters:" Width="756">
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="Padding" Value="5"/>
+                                <Setter Property="BorderThickness" Value="1,1,1,1" />
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="Background" Value="WhiteSmoke" />
+                                <Setter Property="FontFamily" Value="Segoe UI" />
+                                <Setter Property="FontWeight" Value="DemiBold" />
+                                <Setter Property="FontSize" Value="15" />
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
-            <ListBox x:Name="semestersListBox"
-             HorizontalContentAlignment="Stretch"
-             SelectionMode="Extended"
-             Background="WhiteSmoke"
-             BorderBrush="Black"
-             BorderThickness="0"
-             SelectionChanged="semestersListBox_SelectionChanged"
-             >
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="5"/>
-                        <Setter Property="BorderThickness" Value="1" />
-                        <Setter Property="BorderBrush" Value="Gray" />
-                        <Setter Property="Background" Value="WhiteSmoke" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-
-        </ScrollViewer>
-
-        <!-- Return To Create Semester Button-->
+        <!-- Return To Main Menu Button-->
         <Button x:Name="returnToMainMenuButton" 
             Grid.Column="1" Grid.Row="5" 
             Content="Back" 
@@ -130,7 +96,7 @@
             Click="returnToMainMenuButton_Click" Cursor="Hand"
         />
 
-        <!-- Return To Create Semester Button-->
+        <!-- Select Semester Button-->
         <Button x:Name="selectSemesterButton" 
             Grid.Column="3" Grid.Row="5" 
             Content="Select" 

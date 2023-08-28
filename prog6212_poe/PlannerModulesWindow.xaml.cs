@@ -23,5 +23,15 @@ namespace prog6212_poe
         {
             InitializeComponent();
         }
+
+        private void returnToSemesterSelectorButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void selectModuleButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
