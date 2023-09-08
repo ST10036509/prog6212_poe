@@ -13,7 +13,7 @@ namespace HoursForYourLib
         private DateTime startDate;
         private List<Module> modules;
 
-        private Semester(string semesterName, double numberOfWeeks, DateTime startDate, List<Module> modules)
+        public Semester(string semesterName, double numberOfWeeks, DateTime startDate, List<Module> modules)
         {
             this.semesterName=semesterName;
             this.numberOfWeeks=numberOfWeeks;
