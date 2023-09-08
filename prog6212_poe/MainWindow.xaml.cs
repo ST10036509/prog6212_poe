@@ -24,8 +24,8 @@ namespace prog6212_poe
     public partial class MainWindow : Window
     {
         //carry over variables:
-        List<Semester> semesters = new List<Semester>();
-        List<Module> moudles = new List<Module>();
+        private List<Semester> semesters = new List<Semester>();
+        private List<Module> moudles = new List<Module>();
 
         //Constructor
         public MainWindow()
@@ -40,8 +40,6 @@ namespace prog6212_poe
             this.moudles=moudles;
             InitializeComponent();
         }//end OVERLOADED constructor
-
-
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -73,7 +71,7 @@ namespace prog6212_poe
         //open semester page
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
-            Window createSemesterWindow = new SemesterCreationWindow();
+            Window createSemesterWindow = new SemesterCreationWindow(semesters, moudles);
             createSemesterWindow.Show();
             this.Close();
         }//end AddSemesterButton_Click method

@@ -23,8 +23,8 @@ namespace prog6212_poe
     public partial class SemesterCreationWindow : Window
     {
         //carry over variables:
-        List<Semester> semesters = new List<Semester>();
-        List<Module> modules = new List<Module>();
+        private List<Semester> semesters = new List<Semester>();
+        private List<Module> modules = new List<Module>();
 
 
         //constructor
@@ -71,7 +71,7 @@ namespace prog6212_poe
         //open add module page
         private void AddModleButton_Click(object sender, RoutedEventArgs e)
         {
-            Window addModuleWindow = new AddModuleWindow();
+            Window addModuleWindow = new AddModuleWindow(semesters, modules);
             addModuleWindow.Show();
             this.Close();
         }//end AddModleButton_Click method
@@ -79,7 +79,7 @@ namespace prog6212_poe
         //open create semester page
         private void CreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
-            Window mainWindow = new MainWindow();
+            Window mainWindow = new MainWindow(semesters, modules);
             mainWindow.Show();
             this.Close();
         }//end CreateSemesterButton_Click method
@@ -87,7 +87,7 @@ namespace prog6212_poe
         //return to main home page
         private void ReturnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            Window mainWindow = new MainWindow();
+            Window mainWindow = new MainWindow(semesters, modules);
             mainWindow.Show();
             this.Close();
         }//end ReturnToMainMenuButton_Click method
