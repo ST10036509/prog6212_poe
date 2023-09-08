@@ -22,6 +22,7 @@ namespace prog6212_poe
     /// </summary>
     public partial class MainWindow : Window
     {
+
         //Constructor
         public MainWindow()
         {

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace prog6212_poe
 {
     /// <summary>
@@ -21,6 +22,7 @@ namespace prog6212_poe
     /// </summary>
     public partial class SemesterCreationWindow : Window
     {
+
         //Constructor
         public SemesterCreationWindow()
         {
