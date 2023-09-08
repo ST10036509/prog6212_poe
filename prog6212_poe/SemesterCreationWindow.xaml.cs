@@ -13,7 +13,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using HoursForYourLib;
 
 namespace prog6212_poe
 {
@@ -22,6 +22,10 @@ namespace prog6212_poe
     /// </summary>
     public partial class SemesterCreationWindow : Window
     {
+        //carry over variables:
+        /*List<Semester> semesters = new List<Semester>();
+        List<Module> moudles = new List<Module>();*/
+
 
         //Constructor
         public SemesterCreationWindow()
