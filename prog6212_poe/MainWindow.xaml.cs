@@ -23,12 +23,25 @@ namespace prog6212_poe
     /// </summary>
     public partial class MainWindow : Window
     {
+        //carry over variables:
+        List<Semester> semesters = new List<Semester>();
+        List<Module> moudles = new List<Module>();
 
         //Constructor
         public MainWindow()
         {
             InitializeComponent();
         }//end constructor
+
+        //OVERLAODED constructor
+        public MainWindow(List<Semester> semesters, List<Module> moudles)
+        {
+            this.semesters=semesters;
+            this.moudles=moudles;
+            InitializeComponent();
+        }//end OVERLOADED constructor
+
+
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
