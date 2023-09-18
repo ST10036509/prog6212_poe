@@ -22,12 +22,27 @@ namespace prog6212_poe
     /// </summary>
     public partial class PlannerModuleViewWindow : Window
     {
+        //carry over variables:
+        List<Semester> semesters = new List<Semester>();
+        List<Module> modules = new List<Module>();
+        Module selectedModule;
+
         //Constructor
         public PlannerModuleViewWindow()
         {
             InitializeComponent();
         }//end constructor
 
+
+        //OVERLOADED constructor
+        public PlannerModuleViewWindow(List<Semester> semesters, List<Module> modules, Module selectedModule)
+        {
+            InitializeComponent();
+            this.semesters = semesters;
+            this.modules = modules;
+            this.selectedModule = selectedModule;
+            DisplayModuleData();
+        }
         //Disable The Window Close Button
         //import .ddl files for the windows api
         [DllImport("user32.dll")]
@@ -54,13 +69,27 @@ namespace prog6212_poe
             EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
         }//end Disable The Window Close Button
 
+        public void DisplayModuleData()
+        {
+            moduleNameTextBlock.Text = selectedModule.ModuleName;
+            moduleCodeTextBlock.Text = selectedModule.ModuleCode;
+            creditsTextBlock.Text = selectedModule.Credits.ToString();
+            hoursPerWeekTextBlock.Text = "0";
+            hoursCompletedTextBlock.Text = "0/0";
+        }
+
         //return to modules view page
         private void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
         {
-            Window viewModulesWindow = new PlannerModulesWindow();
+            Window viewModulesWindow = new PlannerModulesWindow(semesters, modules);
             viewModulesWindow.Show();
             this.Close();
         }//end returnToModulesViewButton_Click method
+
+        private void addHoursButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 //_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

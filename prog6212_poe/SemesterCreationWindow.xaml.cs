@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,10 +25,15 @@ namespace prog6212_poe
     /// </summary>
     public partial class SemesterCreationWindow : Window
     {
+        //CONSTANTS
+        static DateTime DEFAULT_DATE = DateTime.Today;
+
         //carry over variables:
         private List<Semester> semesters = new List<Semester>();
         private List<Module> modules = new List<Module>();
-
+        private string semesterName = "";
+        private double semesterNumberOfWeeks = 0;
+        private DateTime semesterStartDate = DEFAULT_DATE;
 
         //constructor
         public SemesterCreationWindow()
@@ -34,11 +42,22 @@ namespace prog6212_poe
         }//end constructor
 
         //OVERLOADED Constructor
-        public SemesterCreationWindow(List<Semester> semesters, List<Module> modules)
+        public SemesterCreationWindow(List<Semester> semesters, List<Module> modules, string name, double weeks, DateTime date)
         {
+            InitializeComponent();
             this.semesters = semesters;
             this.modules = modules;
+            this.semesterName = name;
+            this.semesterNumberOfWeeks = weeks;
+            this.semesterStartDate = date;
+            FillTextBoxData();
+
+        }//end OVERLOADED constructor
+
+        public SemesterCreationWindow(List<Semester> semesters)
+        {
             InitializeComponent();
+            this.semesters = semesters;
         }//end OVERLOADED constructor
 
         //Disable The Window Close Button
@@ -71,7 +90,9 @@ namespace prog6212_poe
         //open add module page
         private void AddModleButton_Click(object sender, RoutedEventArgs e)
         {
-            Window addModuleWindow = new AddModuleWindow(semesters, modules);
+            CaptureTextBoxData();
+
+            Window addModuleWindow = new AddModuleWindow(semesters, modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
             addModuleWindow.Show();
             this.Close();
         }//end AddModleButton_Click method
@@ -79,15 +100,113 @@ namespace prog6212_poe
         //open create semester page
         private void CreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
-            Window mainWindow = new MainWindow(semesters, modules);
-            mainWindow.Show();
-            this.Close();
+            //declare variables
+            double weeks = 0;
+            //test if weeks is valid double and assign
+            bool semesterWeeksIsParsable = double.TryParse(numberOfWeeksTextBox.Text, out weeks);
+            DateTime startDate;
+            //test if start date is valid datetime and assign
+            bool semesterStartDateIsParsable = DateTime.TryParse(startDateDatePicker.Text, out startDate);
+
+            //validate input
+            if (semesterNameTextBox.Text == "" || numberOfWeeksTextBox.Text == "" || startDateDatePicker.Text == "")
+            {
+                //error message if fields are empty
+                MessageBox.Show("Please Fill In All The Fields!", "HoursForYou");
+            }
+            else
+            {
+                //validate input for weeks and quantity
+                if (semesterWeeksIsParsable == false)
+                {
+                    //error message if weeks is not a number
+                    MessageBox.Show("Please Make Sure Your Number of Weeks Is A Number!", "HoursForYou");
+                }
+                else
+                {
+                    //validate input for start date
+                    if (semesterStartDateIsParsable == false)
+                    {
+                        //error message if start date is not a number
+                        MessageBox.Show("Please Make Sure Your START DATE Is A Valid Date!", "HoursForYou");
+                    }
+                    else
+                    {
+                        //validate input for modules
+                        if (modules.Count() < 1)
+                        {
+                            MessageBox.Show("Please Make Sure You Add At Least ONE Module Before Proceeding!", "HoursForYou");
+                        }
+                        else
+                        {
+                            //create new semester
+                            Semester newSemester = new Semester(semesterNameTextBox.Text, weeks, startDate, modules);
+                            //add semester to list
+                            semesters.Add(newSemester);
+
+                            //clear TextBox values
+                            semesterNameTextBox.Text = "";
+                            numberOfWeeksTextBox.Text = "";
+                            startDateDatePicker.Text = "";
+
+                            //display success message
+                            messageTextBlock.Visibility = Visibility.Visible;
+
+                            Window mainWindow = new MainWindow(semesters);
+                            mainWindow.Show();
+                            this.Close();
+                        }
+                    }
+                }
+            }
         }//end CreateSemesterButton_Click method
+
+        //refill textboxes
+        public void FillTextBoxData()
+        {
+            semesterNameTextBox.Text = semesterName;
+            numberOfWeeksTextBox.Text = semesterNumberOfWeeks.ToString();
+            startDateDatePicker.Text = semesterStartDate.ToString();
+        }//end FillTextBoxData method
+
+        //Capture GUI Data For Carry Over
+        public void CaptureTextBoxData()
+        {
+            semesterName = semesterNameTextBox.Text;
+            bool weeksIsParsable = Double.TryParse(numberOfWeeksTextBox.Text, out semesterNumberOfWeeks);
+            bool startDateIsParsable = DateTime.TryParse(startDateDatePicker.Text, out semesterStartDate);
+            //if weeks is an invalid inout then pass a default value
+            if (!weeksIsParsable)
+            {
+                semesterNumberOfWeeks = 0;
+            }
+            //if start date is an invalid inout then pass a default value
+            if (!startDateIsParsable)
+            {
+                semesterStartDate = DEFAULT_DATE;
+            }
+        }//end CaptureTextBoxData method
+
+        //methods to reset after creation:
+        private void semesterNameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end semesterNameTextBox_GotFocus method
+
+        private void numberOfWeeksTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end numberOfWeeksTextBox_GotFocus method
+
+        private void startDateDatePicker_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end startDateDatePicker_GotFocus method
 
         //return to main home page
         private void ReturnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            Window mainWindow = new MainWindow(semesters, modules);
+            Window mainWindow = new MainWindow(semesters);
             mainWindow.Show();
             this.Close();
         }//end ReturnToMainMenuButton_Click method

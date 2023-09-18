@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HoursForYourLib;
+using Module = HoursForYourLib.Module;
 
 namespace prog6212_poe
 {
@@ -25,7 +27,6 @@ namespace prog6212_poe
     {
         //carry over variables:
         private List<Semester> semesters = new List<Semester>();
-        private List<Module> moudles = new List<Module>();
 
         //Constructor
         public MainWindow()
@@ -34,11 +35,10 @@ namespace prog6212_poe
         }//end constructor
 
         //OVERLAODED constructor
-        public MainWindow(List<Semester> semesters, List<Module> moudles)
+        public MainWindow(List<Semester> semesters)
         {
-            this.semesters=semesters;
-            this.moudles=moudles;
             InitializeComponent();
+            this.semesters = semesters;
         }//end OVERLOADED constructor
 
         //Disable The Window Close Button
@@ -71,7 +71,7 @@ namespace prog6212_poe
         //open semester page
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
-            Window createSemesterWindow = new SemesterCreationWindow(semesters, moudles);
+            Window createSemesterWindow = new SemesterCreationWindow(semesters);
             createSemesterWindow.Show();
             this.Close();
         }//end AddSemesterButton_Click method
@@ -79,9 +79,16 @@ namespace prog6212_poe
         //open planner page
         private void PlannerBookButton_Click(object sender, RoutedEventArgs e)
         {
-            Window viewSemestersWindow = new PlannerSemestersWindow();
-            viewSemestersWindow.Show();
-            this.Close();
+            if (semesters.Count() >= 1)
+            {
+                Window viewSemestersWindow = new PlannerSemestersWindow(semesters);
+                viewSemestersWindow.Show();
+                this.Close();
+            }
+            else
+            {
+                 MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }//end PlannerBookButton_Click method
 
         //close program

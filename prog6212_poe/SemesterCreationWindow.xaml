@@ -107,6 +107,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
+            GotFocus="semesterNameTextBox_GotFocus"
         />
 
         <!--Number Of Weeks TextBlock and TextBox-->
@@ -125,6 +126,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
+            GotFocus="numberOfWeeksTextBox_GotFocus"
         />
 
         <!--Number Of Weeks TextBlock and DatePicker-->
@@ -147,6 +149,7 @@
             BorderThickness="0.7"
             Background="WhiteSmoke"
             Cursor="Hand"
+            GotFocus="startDateDatePicker_GotFocus"
         >
             <DatePicker.Foreground>
                 <SolidColorBrush Color="Black" Opacity="0.6"/>
@@ -162,6 +165,17 @@
             FontSize="20" FontWeight="DemiBold"
             BorderThickness="0.7"
             Click="AddModleButton_Click" Cursor="Hand"
+        />
+        
+        <TextBlock
+            x:Name="messageTextBlock"
+            Grid.Column="2" Grid.Row="12"
+            Text="Semester Created Successfully!"
+            HorizontalAlignment="Center"
+            FontWeight="Bold"
+            FontSize="15"
+            Foreground="Green"
+            Visibility="Hidden"
         />
 
         <!-- Create Semester Button-->

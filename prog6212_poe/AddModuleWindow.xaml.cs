@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,6 +27,9 @@ namespace prog6212_poe
         //carry over variables:
         private List<Semester> semesters = new List<Semester>();
         private List<Module> modules = new List<Module>();
+        private string semesterName;
+        private double numberOfWeeks;
+        private DateTime startDate;
 
         //Constructor
         public AddModuleWindow()
@@ -33,11 +38,15 @@ namespace prog6212_poe
         }//end constructor
 
         //OVERLOADED Constructor
-        public AddModuleWindow(List<Semester> semesters, List<Module> modules)
+        public AddModuleWindow(List<Semester> semesters, List<Module> modules,
+                               string name, double weeks, DateTime date)
         {
+            InitializeComponent();
             this.semesters = semesters;
             this.modules = modules;
-            InitializeComponent();
+            this.semesterName = name;
+            this.numberOfWeeks = weeks;
+            this.startDate = date;
         }//end OVERLOADED constructor
 
         //Disable The Window Close Button
@@ -70,15 +79,78 @@ namespace prog6212_poe
         //add module and return to create semester page
         private void AddModuleButton_Click(object sender, RoutedEventArgs e)
         {
-            Window createSemesterWindow = new SemesterCreationWindow(semesters, modules);
-            createSemesterWindow.Show();
-            this.Close();
+            //declare variables
+            double credits = 0;
+            bool moduleCreditsIsParsable = double.TryParse(numberOfCreditsTextBox.Text, out credits);
+            double hours = 0;
+            bool moduleHoursIsParsable = double.TryParse(classHoursPerWeekTextBox.Text, out hours);
+
+            messageTextBlock.Visibility = Visibility.Hidden;
+
+            //validate input
+            if (moduleNameTextBox.Text == "" || moduleCodeTextBox.Text == "" || numberOfCreditsTextBox.Text == "" || classHoursPerWeekTextBox.Text == "")
+            {
+                //error message if fields are empty
+                MessageBox.Show("Please Fill In All The Fields!", "HoursForYou");
+            }
+            else
+            {
+                //validate input for credits and hours
+                if (moduleCreditsIsParsable == false)
+                {
+                    //error message if credits is not a number
+                    MessageBox.Show("Please Make Sure Your CREDITS Is A Valid Number!", "HoursForYou");
+                }
+                else
+                {
+                    //validate input for hours
+                    if (moduleHoursIsParsable == false)
+                    {
+                        //error message if hours is not a number
+                        MessageBox.Show("Please Make Sure Your CLASS HOURS Is A Valid Number!", "HoursForYou");
+                    }
+                    else
+                    {
+                        //create new module
+                        Module newModule = new Module(moduleNameTextBox.Text, moduleCodeTextBox.Text, credits, hours);
+                        //add module to list
+                        modules.Add(newModule);
+
+                        //clear fields
+                        moduleNameTextBox.Text = "";
+                        moduleCodeTextBox.Text = "";
+                        numberOfCreditsTextBox.Text = "";
+                        classHoursPerWeekTextBox.Text = "";
+
+                        //display success message
+                        messageTextBlock.Visibility = Visibility.Visible;
+                    }
+                }
+            }   
         }//end addModuleButton_Click method
+
+        //methods to reset after creation:
+        private void moduleNameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end moduleNameTextBox_GotFocus method
+        private void moduleCodeTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end moduleCodeTextBox_GotFocus method
+        private void numberOfCreditsTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end numberOfCreditsTextBox_GotFocus method
+        private void classHoursPerWeekTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end classHoursPerWeekTextBox_GotFocus method
 
         //return to create semester page
         private void ReturnToCreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
-            Window createSemesterWindow = new SemesterCreationWindow(semesters, modules);
+            Window createSemesterWindow = new SemesterCreationWindow(semesters, modules, semesterName, numberOfWeeks, startDate);
             createSemesterWindow.Show();
             this.Close();
         }//end returnToCreateSemesterButton_Click method

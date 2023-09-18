@@ -22,13 +22,24 @@ namespace prog6212_poe
     /// </summary>
     public partial class PlannerModulesWindow : Window
     {
+        //carry over variables:
+        List<Semester> semesters = new List<Semester>();
+        List<Module> modules = new List<Module>();
+
         //Constructor
         public PlannerModulesWindow()
         {
             InitializeComponent();
-            List<string> test2 = new List<string>() { "a", "b", "c", "d" };
-            this.modulesListView.ItemsSource = test2;
         }//end constructor
+
+        //OVERLOADED constructor
+        public PlannerModulesWindow(List<Semester> semesters, List<Module> modules)
+        {
+            InitializeComponent();
+            this.semesters = semesters;
+            this.modules = modules;
+            DisplayModules();
+        }//end OVERLOADED constructor
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -57,10 +68,32 @@ namespace prog6212_poe
         }
         //end Disable The Window Close Button
 
+        //display the modules in the list view
+        public void DisplayModules()
+        {
+            //local variable declarations:
+            //find list of names:
+            var moduleNames = modules.Select(module => module.ModuleName).ToList();
+
+            //display names
+            foreach (String name in moduleNames)
+            {
+                modulesListView.Items.Add(name);
+            }
+        }//end DisplayModules method
+
         //select a module && go to the module details window
         private void selectModuleButton_Click(object sender, RoutedEventArgs e)
         {
-            Window moduleDetailsWindow = new PlannerModuleViewWindow();
+            //check if no module has been selected
+            if (!(modulesListView.SelectedIndex >= 0))
+            {
+                MessageBox.Show("No Module Selected!");
+                return;
+            }
+
+            //open module view window
+            Window moduleDetailsWindow = new PlannerModuleViewWindow(semesters, modules, modules[modulesListView.SelectedIndex]);
             moduleDetailsWindow.Show();
             this.Close();
         }//end selectModuleButton_Click method
@@ -68,7 +101,7 @@ namespace prog6212_poe
         //return to the semester view window
         private void returnToSemesterViewButton_Click(object sender, RoutedEventArgs e)
         {
-            Window viewSemestersWindow = new PlannerSemestersWindow();
+            Window viewSemestersWindow = new PlannerSemestersWindow(semesters);
             viewSemestersWindow.Show();
             this.Close();
         }//end returnToSemesterViewButton_Click method

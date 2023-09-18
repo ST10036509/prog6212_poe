@@ -24,6 +24,7 @@ namespace HoursForYourLib
         public string SemesterName { get => semesterName; set => semesterName=value; }
         public double NumberOfWeeks { get => numberOfWeeks; set => numberOfWeeks=value; }
         public DateTime StartDate { get => startDate; set => startDate=value; }
+        public List<Module> Modules { get => modules; set => modules=value; }
     }
 }
 //_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________
