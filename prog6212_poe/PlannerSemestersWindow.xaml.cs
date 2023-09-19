@@ -72,9 +72,11 @@ namespace prog6212_poe
         {
             //local variable declarations:
             //find list of names
+            //using LINQ to capture names fo all the semesters
             var semesterNames = semesters.Select(semester => semester.SemesterName).ToList();
             
-            //add names
+            //display names
+            //cannot use LINQ to pull data into the List View!!
             foreach (String name in semesterNames)
             {
                 semestersListView.Items.Add(name);

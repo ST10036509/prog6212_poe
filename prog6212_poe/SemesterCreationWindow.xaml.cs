@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.TextFormatting;
 using System.Windows.Shapes;
 using HoursForYourLib;
 
@@ -90,18 +91,17 @@ namespace prog6212_poe
         //open add module page
         private void AddModleButton_Click(object sender, RoutedEventArgs e)
         {
-            CaptureTextBoxData();
-
-            Window addModuleWindow = new AddModuleWindow(semesters, modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
-            addModuleWindow.Show();
-            this.Close();
+                CaptureTextBoxData();
+                Window addModuleWindow = new AddModuleWindow(semesters, modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
+                addModuleWindow.Show();
+                this.Close();
         }//end AddModleButton_Click method
 
         //open create semester page
         private void CreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
             //declare variables
-            double weeks = 0;
+            double weeks;
             //test if weeks is valid double and assign
             bool semesterWeeksIsParsable = double.TryParse(numberOfWeeksTextBox.Text, out weeks);
             DateTime startDate;
@@ -139,6 +139,9 @@ namespace prog6212_poe
                         }
                         else
                         {
+                            //calculate and assign the self study hours and generate a dictionary for the weeks with base value of  the self study hours
+                            ModuleHoursAssignment(weeks);
+
                             //create new semester
                             Semester newSemester = new Semester(semesterNameTextBox.Text, weeks, startDate, modules);
                             //add semester to list
@@ -186,6 +189,36 @@ namespace prog6212_poe
                 semesterStartDate = DEFAULT_DATE;
             }
         }//end CaptureTextBoxData method
+
+        public void ModuleHoursAssignment(double weeks)
+        {
+            foreach (Module module in modules)
+            {
+                //local variable declaration
+                double hoursHolder;
+
+                //calculate the self study hours and store in a temp variable
+                hoursHolder = ((module.Credits * 10) / weeks) - module.ClassHours;
+
+                //checkl if the hours calculated is a negative number
+                if (hoursHolder < 0)
+                {
+                    //if it is negative then set it to 0
+                    module.SelfStudyHours = 0;
+                }
+                else
+                {
+                    //if it is positive set it to the calculated value
+                    module.SelfStudyHours = hoursHolder;
+                }
+
+                //generate dictinary of weeks and give default value of calcyulated self study hours
+                for (int i = 0; i < weeks; i++)
+                {
+                    module.CompletedHours.Add(i, module.SelfStudyHours);
+                }
+            }
+        }//end ModuleHoursAssignment method
 
         //methods to reset after creation:
         private void semesterNameTextBox_GotFocus(object sender, RoutedEventArgs e)

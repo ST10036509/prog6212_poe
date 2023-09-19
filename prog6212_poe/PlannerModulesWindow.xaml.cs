@@ -73,9 +73,11 @@ namespace prog6212_poe
         {
             //local variable declarations:
             //find list of names:
+            //using LINQ to capture names fo all the modules
             var moduleNames = modules.Select(module => module.ModuleName).ToList();
 
             //display names
+            //cannot use LINQ to pull data into the List View!!
             foreach (String name in moduleNames)
             {
                 modulesListView.Items.Add(name);

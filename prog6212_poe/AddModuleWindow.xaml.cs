@@ -112,7 +112,7 @@ namespace prog6212_poe
                     else
                     {
                         //create new module
-                        Module newModule = new Module(moduleNameTextBox.Text, moduleCodeTextBox.Text, credits, hours);
+                        Module newModule = new Module(moduleNameTextBox.Text, moduleCodeTextBox.Text, credits, hours, startDate);
                         //add module to list
                         modules.Add(newModule);
 

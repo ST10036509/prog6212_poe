@@ -74,8 +74,8 @@ namespace prog6212_poe
             moduleNameTextBlock.Text = selectedModule.ModuleName;
             moduleCodeTextBlock.Text = selectedModule.ModuleCode;
             creditsTextBlock.Text = selectedModule.Credits.ToString();
-            hoursPerWeekTextBlock.Text = "0";
-            hoursCompletedTextBlock.Text = "0/0";
+            hoursPerWeekTextBlock.Text = selectedModule.SelfStudyHours.ToString();
+            hoursCompletedTextBlock.Text = "0/" + selectedModule.SelfStudyHours.ToString();
         }
 
         //return to modules view page
