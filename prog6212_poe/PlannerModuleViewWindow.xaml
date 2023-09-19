@@ -68,6 +68,7 @@
             FontWeight="DemiBold"
         />
 
+        
         <!--Add Block Around Data Capture Inputs-->
         <Rectangle
             Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="9"
@@ -172,35 +173,12 @@
             SelectedDateFormat="Short"
             BorderThickness="0.7"
             Background="WhiteSmoke"
-            Cursor="Hand"
+            Cursor="Hand" FirstDayOfWeek="Monday"
         >
             <DatePicker.Foreground>
                 <SolidColorBrush Color="Black" Opacity="0.6"/>
             </DatePicker.Foreground>
         </DatePicker>
-
-        <!--Add Hours Per Week Title and Output TextBlock-->
-        <TextBlock
-            Grid.Column="1" Grid.Row="7"   
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="Hours per week:"
-            Margin="0,0,0,0"
-            FontSize="18"
-            Foreground="#FF6F6F6F"
-            FontWeight="DemiBold"
-        />
-        <TextBlock
-            Grid.Column="1" Grid.Row="8"
-            x:Name="hoursPerWeekTextBlock"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="hrs_p_week"
-            Margin="0,0,0,0"
-            FontSize="18"
-            Foreground="Black"
-            FontWeight="Bold"
-        />
 
         <!-- Add Hours Button-->
         <Button x:Name="addHoursButton"
@@ -243,6 +221,22 @@
             </TextBox.Foreground>
         </TextBox>
 
+        <!--Add Select A Week Title and Input ComboBox-->
+        <TextBlock
+            Grid.Column="1" Grid.Row="7"   
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="Select a Week:"
+            Margin="0,0,0,0"
+            FontSize="18"
+            Foreground="#FF6F6F6F"
+            FontWeight="DemiBold"
+        />
+        <ComboBox x:Name="weekComboBox"
+                  Grid.Column="1" Grid.Row="8"
+                  Width="200"
+                  SelectionChanged="weekComboBox_SelectionChanged"/>
+        
         <!--Add Hours Completed Title and Output TextBlock-->
         <TextBlock
             Grid.Column="1" Grid.Row="9"   

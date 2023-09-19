@@ -87,7 +87,7 @@ namespace prog6212_poe
             }
             else
             {
-                 MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou", MessageBoxButton.OK, MessageBoxImage.Error);
+                 MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou");
             }
         }//end PlannerBookButton_Click method
 

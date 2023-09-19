@@ -107,7 +107,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="semesterNameTextBox_GotFocus"
+            GotFocus="_GotFocus"
         />
 
         <!--Number Of Weeks TextBlock and TextBox-->
@@ -126,7 +126,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="numberOfWeeksTextBox_GotFocus"
+            GotFocus="_GotFocus"
         />
 
         <!--Number Of Weeks TextBlock and DatePicker-->
@@ -149,7 +149,7 @@
             BorderThickness="0.7"
             Background="WhiteSmoke"
             Cursor="Hand"
-            GotFocus="startDateDatePicker_GotFocus"
+            GotFocus="_GotFocus"
         >
             <DatePicker.Foreground>
                 <SolidColorBrush Color="Black" Opacity="0.6"/>

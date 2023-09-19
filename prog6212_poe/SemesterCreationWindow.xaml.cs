@@ -220,21 +220,11 @@ namespace prog6212_poe
             }
         }//end ModuleHoursAssignment method
 
-        //methods to reset after creation:
-        private void semesterNameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        //reset after creation:
+        private void _GotFocus(object sender, RoutedEventArgs e)
         {
             messageTextBlock.Visibility = Visibility.Hidden;
-        }//end semesterNameTextBox_GotFocus method
-
-        private void numberOfWeeksTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            messageTextBlock.Visibility = Visibility.Hidden;
-        }//end numberOfWeeksTextBox_GotFocus method
-
-        private void startDateDatePicker_GotFocus(object sender, RoutedEventArgs e)
-        {
-            messageTextBlock.Visibility = Visibility.Hidden;
-        }//end startDateDatePicker_GotFocus method
+        }//end _GotFocus method
 
         //return to main home page
         private void ReturnToMainMenuButton_Click(object sender, RoutedEventArgs e)

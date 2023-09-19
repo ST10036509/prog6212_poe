@@ -129,23 +129,11 @@ namespace prog6212_poe
             }   
         }//end addModuleButton_Click method
 
-        //methods to reset after creation:
-        private void moduleNameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        //reset after creation:
+        private void _GotFocus(object sender, RoutedEventArgs e)
         {
             messageTextBlock.Visibility = Visibility.Hidden;
-        }//end moduleNameTextBox_GotFocus method
-        private void moduleCodeTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            messageTextBlock.Visibility = Visibility.Hidden;
-        }//end moduleCodeTextBox_GotFocus method
-        private void numberOfCreditsTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            messageTextBlock.Visibility = Visibility.Hidden;
-        }//end numberOfCreditsTextBox_GotFocus method
-        private void classHoursPerWeekTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            messageTextBlock.Visibility = Visibility.Hidden;
-        }//end classHoursPerWeekTextBox_GotFocus method
+        }//end _GotFocus method
 
         //return to create semester page
         private void ReturnToCreateSemesterButton_Click(object sender, RoutedEventArgs e)
@@ -154,6 +142,11 @@ namespace prog6212_poe
             createSemesterWindow.Show();
             this.Close();
         }//end returnToCreateSemesterButton_Click method
+
+        private void moduleCodeTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 //_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

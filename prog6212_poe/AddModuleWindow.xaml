@@ -109,7 +109,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="moduleNameTextBox_GotFocus"
+            GotFocus="_GotFocus"
         />
 
         <!--Module Code TextBlock and TextBox-->
@@ -128,7 +128,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="moduleCodeTextBox_GotFocus"
+            GotFocus="_GotFocus"
         />
 
         <!--Number Of Credits TextBlock and TextBox-->
@@ -147,7 +147,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="numberOfCreditsTextBox_GotFocus"
+            GotFocus="_GotFocus"
         />
 
         <!--Number Of Class Hours Per Week TextBlock and TextBox-->
@@ -166,7 +166,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="classHoursPerWeekTextBox_GotFocus"
+            GotFocus="_GotFocus"
         />
 
         <TextBlock

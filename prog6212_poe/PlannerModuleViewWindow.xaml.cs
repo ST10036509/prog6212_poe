@@ -26,6 +26,7 @@ namespace prog6212_poe
         List<Semester> semesters = new List<Semester>();
         List<Module> modules = new List<Module>();
         Module selectedModule;
+        int weeks = 0;
 
         //Constructor
         public PlannerModuleViewWindow()
@@ -74,8 +75,77 @@ namespace prog6212_poe
             moduleNameTextBlock.Text = selectedModule.ModuleName;
             moduleCodeTextBlock.Text = selectedModule.ModuleCode;
             creditsTextBlock.Text = selectedModule.Credits.ToString();
-            hoursPerWeekTextBlock.Text = selectedModule.SelfStudyHours.ToString();
-            hoursCompletedTextBlock.Text = "0/" + selectedModule.SelfStudyHours.ToString();
+            foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
+            {
+                weekComboBox.Items.Add(week.Key + 1);
+                ++weeks;
+            }
+            weekComboBox.SelectedIndex = 0;
+        }
+
+        private void addHoursButton_Click(object sender, RoutedEventArgs e)
+        {
+            double hours = 0;
+            bool hoursIsParsable = Double.TryParse(hoursTextBox.Text, out hours);
+            DateTime date;
+            bool dateIsParsable = DateTime.TryParse(selectedDateDatePicker.Text, out date);
+            
+            if (!hoursIsParsable)
+            {
+                MessageBox.Show("Please Ensure Hours Is A Valid Number!");
+                return;
+            }
+            
+            if (!dateIsParsable)
+            {
+                MessageBox.Show("Please Ensure Date Is A Valid Date!");
+                return;
+            }
+
+            if ((hoursTextBox.Text == "") || (selectedDateDatePicker.Text == ""))
+            {
+                MessageBox.Show("Please Ensure You Fill Out All Data Fields!");
+                return;
+            }
+
+            //IdentifyWeek(date);
+            //UpdateWeek(0);
+        }
+
+        //public void IdentifyWeek(DateTime date)
+        //{
+        //    double dayIndex = (date.Subtract(selectedModule.SemesterStartDate).Days) / 7;
+
+        //    foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
+        //    {
+        //        int count = selectedModule.CompletedHours.Count();
+
+        //        if (dayIndex >= week.Key + 1)
+        //        {
+        //            break;
+        //        }
+        //        else
+        //        {
+
+        //        }
+
+        //    }
+        //}
+
+        public void UpdateWeek(int week)
+        {
+            selectedModule.CompletedHours[week] = Double.Parse(hoursTextBox.Text);
+        }
+
+        private void weekComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedWeek = Int32.Parse(weekComboBox.SelectedItem.ToString()) - 1;
+
+            hoursCompletedTextBlock.Text = selectedModule.CompletedHours[selectedWeek] + "/" + selectedModule.SelfStudyHours.ToString();
+            selectedDateDatePicker.DisplayDateStart = selectedModule.SemesterStartDate.AddDays(7 * selectedWeek);
+
+            var currentStartDate = selectedDateDatePicker.DisplayDateStart.Value;
+            selectedDateDatePicker.DisplayDateEnd = currentStartDate.AddDays(6);
         }
 
         //return to modules view page
@@ -85,11 +155,6 @@ namespace prog6212_poe
             viewModulesWindow.Show();
             this.Close();
         }//end returnToModulesViewButton_Click method
-
-        private void addHoursButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
 //_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

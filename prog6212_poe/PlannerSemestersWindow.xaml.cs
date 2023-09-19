@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HoursForYourLib;
+using static prog6212_poe.PlannerModulesWindow;
 
 namespace prog6212_poe
 {
@@ -70,20 +72,18 @@ namespace prog6212_poe
 
         public void DisplaySemesters()        
         {
-            //local variable declarations:
-            //find list of names
-            //using LINQ to capture names fo all the semesters
-            var semesterNames = semesters.Select(semester => semester.SemesterName).ToList();
-            
-            //display names
-            //cannot use LINQ to pull data into the List View!!
-            foreach (String name in semesterNames)
+            var myItems = semesters.Select(semester => new MySemesterItem
             {
-                semestersListView.Items.Add(name);
-            }
+                Name = semester.SemesterName,
+            }).ToList();
+
+            semestersListView.ItemsSource = myItems;
         }
         //end DisplaySemsters method 
-
+        public class MySemesterItem
+        {
+            public string Name { get; set; }
+        }
         //select a semester && open the modules selection window
         private void selectSemesterButton_Click(object sender, RoutedEventArgs e)
         {

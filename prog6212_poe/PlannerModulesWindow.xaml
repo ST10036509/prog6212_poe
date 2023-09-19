@@ -72,7 +72,7 @@
             Foreground="Black" FontWeight="Bold">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Modules:" Width="618">
+                    <GridViewColumn Header="Modules:" Width="618" DisplayMemberBinding="{Binding Name}">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Padding" Value="5"/>
@@ -87,7 +87,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="Hours:" Width="120">
+                    <GridViewColumn Header="Hours:" Width="120" DisplayMemberBinding="{Binding Hours}">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Padding" Value="5"/>

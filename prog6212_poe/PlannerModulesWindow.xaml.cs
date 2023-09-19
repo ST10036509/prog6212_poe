@@ -71,18 +71,20 @@ namespace prog6212_poe
         //display the modules in the list view
         public void DisplayModules()
         {
-            //local variable declarations:
-            //find list of names:
-            //using LINQ to capture names fo all the modules
-            var moduleNames = modules.Select(module => module.ModuleName).ToList();
-
-            //display names
-            //cannot use LINQ to pull data into the List View!!
-            foreach (String name in moduleNames)
+            var myItems = modules.Select(module => new MyModuleItem
             {
-                modulesListView.Items.Add(name);
-            }
+                Name = module.ModuleName,
+                Hours = module.SelfStudyHours.ToString()
+            }).ToList();
+
+            modulesListView.ItemsSource = myItems;
         }//end DisplayModules method
+
+        public class MyModuleItem
+        {
+            public string Name { get; set; }
+            public string Hours { get; set; }
+        }
 
         //select a module && go to the module details window
         private void selectModuleButton_Click(object sender, RoutedEventArgs e)

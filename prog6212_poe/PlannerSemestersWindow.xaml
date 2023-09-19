@@ -70,7 +70,7 @@
             Foreground="Black" FontWeight="Bold">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Semesters:" Width="738">
+                    <GridViewColumn Header="Semesters:" Width="738" DisplayMemberBinding="{Binding Name}">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="Padding" Value="5"/>
