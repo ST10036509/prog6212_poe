@@ -28,6 +28,8 @@ namespace prog6212_poe
         //carry over variables:
         List<Semester> semesters = new List<Semester>();
 
+        //----------------------------------------------------------------------------------------------Constructors
+
         //Constructor
         public PlannerSemestersWindow()
         {
@@ -42,6 +44,8 @@ namespace prog6212_poe
             this.semesters = semesters;
             DisplaySemesters();
         }//end OVERLOADED constructor
+
+        //----------------------------------------------------------------------------------------------Remove Exit Button
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -67,29 +71,40 @@ namespace prog6212_poe
             var sysMenu = GetSystemMenu(hWnd.Handle, false);
             //disable the menu item
             EnableMenuItem(sysMenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
-        }
-        //dnd Disable The Window Close Button
+        }//end Disable The Window Close Button
 
+        //----------------------------------------------------------------------------------------------DisplaySemesters
+
+        //display the semesters in the list view
         public void DisplaySemesters()        
         {
+            //use LINQ to get semester names from the list of semesters
             var myItems = semesters.Select(semester => new MySemesterItem
             {
                 Name = semester.SemesterName,
             }).ToList();
 
+            //add names to list view
             semestersListView.ItemsSource = myItems;
-        }
-        //end DisplaySemsters method 
+        }//end DisplaySemsters method 
+
+        //----------------------------------------------------------------------------------------------MySemesterItem Class
+
+        //class to store semester name items for DataLink to window
         public class MySemesterItem
         {
             public string Name { get; set; }
-        }
+        }//end MySemesterItem class
+
+        //----------------------------------------------------------------------------------------------selectSemesterButton_Click
+
         //select a semester && open the modules selection window
         private void selectSemesterButton_Click(object sender, RoutedEventArgs e)
         {
             //check if no semester has been selected
             if (!(semestersListView.SelectedIndex >= 0))
             {
+                //error message if no semester is selected
                 MessageBox.Show("No Semester Selected!");
                 return;
             }
@@ -103,9 +118,12 @@ namespace prog6212_poe
             this.Close();
         }//end selectSemesterButton_Click method
 
+        //----------------------------------------------------------------------------------------------returnToMainMenuButton_Click
+
         //return to Main Menu page
         private void returnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            //open main window
             Window mainWindow = new MainWindow(semesters);
             mainWindow.Show();
             this.Close();

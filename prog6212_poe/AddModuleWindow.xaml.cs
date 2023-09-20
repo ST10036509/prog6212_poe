@@ -31,6 +31,8 @@ namespace prog6212_poe
         private double numberOfWeeks;
         private DateTime startDate;
 
+        //----------------------------------------------------------------------------------------------Constructors
+
         //Constructor
         public AddModuleWindow()
         {
@@ -48,6 +50,8 @@ namespace prog6212_poe
             this.numberOfWeeks = weeks;
             this.startDate = date;
         }//end OVERLOADED constructor
+
+        //----------------------------------------------------------------------------------------------Remove Exit Button
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -76,6 +80,8 @@ namespace prog6212_poe
         }
         //dnd Disable The Window Close Button
 
+        //----------------------------------------------------------------------------------------------AddModuleButton_Click
+
         //add module and return to create semester page
         private void AddModuleButton_Click(object sender, RoutedEventArgs e)
         {
@@ -85,9 +91,10 @@ namespace prog6212_poe
             double hours = 0;
             bool moduleHoursIsParsable = double.TryParse(classHoursPerWeekTextBox.Text, out hours);
 
+            //update success message visability
             messageTextBlock.Visibility = Visibility.Hidden;
 
-            //validate input
+            //validate input is not null
             if (moduleNameTextBox.Text == "" || moduleCodeTextBox.Text == "" || numberOfCreditsTextBox.Text == "" || classHoursPerWeekTextBox.Text == "")
             {
                 //error message if fields are empty
@@ -95,7 +102,7 @@ namespace prog6212_poe
             }
             else
             {
-                //validate input for credits and hours
+                //validate input for credits
                 if (moduleCreditsIsParsable == false)
                 {
                     //error message if credits is not a number
@@ -129,24 +136,25 @@ namespace prog6212_poe
             }   
         }//end addModuleButton_Click method
 
+        //----------------------------------------------------------------------------------------------_GotFocus
+
         //reset after creation:
         private void _GotFocus(object sender, RoutedEventArgs e)
         {
+            //update visability
             messageTextBlock.Visibility = Visibility.Hidden;
         }//end _GotFocus method
+
+        //----------------------------------------------------------------------------------------------ReturnToCreateSemesterButton_Click
 
         //return to create semester page
         private void ReturnToCreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
+            //open semester creation window
             Window createSemesterWindow = new SemesterCreationWindow(semesters, modules, semesterName, numberOfWeeks, startDate);
             createSemesterWindow.Show();
             this.Close();
         }//end returnToCreateSemesterButton_Click method
-
-        private void moduleCodeTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
 //_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

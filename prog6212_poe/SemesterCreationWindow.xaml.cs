@@ -36,13 +36,15 @@ namespace prog6212_poe
         private double semesterNumberOfWeeks = 0;
         private DateTime semesterStartDate = DEFAULT_DATE;
 
+        //----------------------------------------------------------------------------------------------Constructors
+
         //constructor
         public SemesterCreationWindow()
         {
             InitializeComponent();
         }//end constructor
 
-        //OVERLOADED Constructor
+        //OVERLOADED constructor
         public SemesterCreationWindow(List<Semester> semesters, List<Module> modules, string name, double weeks, DateTime date)
         {
             InitializeComponent();
@@ -55,11 +57,14 @@ namespace prog6212_poe
 
         }//end OVERLOADED constructor
 
+        //OVERLOADED constructor
         public SemesterCreationWindow(List<Semester> semesters)
         {
             InitializeComponent();
             this.semesters = semesters;
         }//end OVERLOADED constructor
+
+        //----------------------------------------------------------------------------------------------Remove Exit Button
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -88,6 +93,8 @@ namespace prog6212_poe
         }
         //dnd Disable The Window Close Button
 
+        //----------------------------------------------------------------------------------------------AddModleButton_Click
+
         //open add module page
         private void AddModleButton_Click(object sender, RoutedEventArgs e)
         {
@@ -96,6 +103,8 @@ namespace prog6212_poe
                 addModuleWindow.Show();
                 this.Close();
         }//end AddModleButton_Click method
+
+        //----------------------------------------------------------------------------------------------CreateSemesterButton_Click
 
         //open create semester page
         private void CreateSemesterButton_Click(object sender, RoutedEventArgs e)
@@ -108,7 +117,7 @@ namespace prog6212_poe
             //test if start date is valid datetime and assign
             bool semesterStartDateIsParsable = DateTime.TryParse(startDateDatePicker.Text, out startDate);
 
-            //validate input
+            //validate input are not null
             if (semesterNameTextBox.Text == "" || numberOfWeeksTextBox.Text == "" || startDateDatePicker.Text == "")
             {
                 //error message if fields are empty
@@ -116,7 +125,7 @@ namespace prog6212_poe
             }
             else
             {
-                //validate input for weeks and quantity
+                //validate input for weeks
                 if (semesterWeeksIsParsable == false)
                 {
                     //error message if weeks is not a number
@@ -127,21 +136,23 @@ namespace prog6212_poe
                     //validate input for start date
                     if (semesterStartDateIsParsable == false)
                     {
-                        //error message if start date is not a number
+                        //error message if start date is not a datetime
                         MessageBox.Show("Please Make Sure Your START DATE Is A Valid Date!", "HoursForYou");
                     }
                     else
                     {
-                        //validate input for modules
+                        //validate there is at LEAST ONE module
                         if (modules.Count() < 1)
                         {
+                            //error message if there are no modules
                             MessageBox.Show("Please Make Sure You Add At Least ONE Module Before Proceeding!", "HoursForYou");
                         }
                         else
                         {
-
+                            //validate if the inputted weeks is a positive number
                             if (weeks <= 0)
                             {
+                                //error message if weeks is not a positive number
                                 MessageBox.Show("Please Make Sure Your Number of Weeks Is A Positive Number And Not ZERO!", "HoursForYou");
                             }
                             else
@@ -162,6 +173,7 @@ namespace prog6212_poe
                                 //display success message
                                 messageTextBlock.Visibility = Visibility.Visible;
 
+                                //open main window
                                 Window mainWindow = new MainWindow(semesters);
                                 mainWindow.Show();
                                 this.Close();
@@ -172,6 +184,8 @@ namespace prog6212_poe
             }
         }//end CreateSemesterButton_Click method
 
+        //----------------------------------------------------------------------------------------------FillTextBoxData
+
         //refill textboxes
         public void FillTextBoxData()
         {
@@ -180,26 +194,36 @@ namespace prog6212_poe
             startDateDatePicker.Text = semesterStartDate.ToString();
         }//end FillTextBoxData method
 
+        //----------------------------------------------------------------------------------------------CaptureTextBoxData
+
         //Capture GUI Data For Carry Over
         public void CaptureTextBoxData()
         {
+            //local variable declaration:
             semesterName = semesterNameTextBox.Text;
             bool weeksIsParsable = Double.TryParse(numberOfWeeksTextBox.Text, out semesterNumberOfWeeks);
             bool startDateIsParsable = DateTime.TryParse(startDateDatePicker.Text, out semesterStartDate);
+
             //if weeks is an invalid inout then pass a default value
             if (!weeksIsParsable)
             {
+                //set default value
                 semesterNumberOfWeeks = 0;
             }
             //if start date is an invalid inout then pass a default value
             if (!startDateIsParsable)
             {
+                //set default value
                 semesterStartDate = DEFAULT_DATE;
             }
         }//end CaptureTextBoxData method
 
+        //----------------------------------------------------------------------------------------------ModuleHoursAssignment
+        
+        //calculate and assign each week the defualt value per module
         public void ModuleHoursAssignment(double weeks)
         {
+            //loop through modules in a semester
             foreach (Module module in modules)
             {
                 //local variable declaration
@@ -208,7 +232,7 @@ namespace prog6212_poe
                 //calculate the self study hours and store in a temp variable
                 hoursHolder = ((module.Credits * 10) / weeks) - module.ClassHours;
 
-                //checkl if the hours calculated is a negative number
+                //check if the hours calculated is a negative number
                 if (hoursHolder < 0)
                 {
                     //if it is negative then set it to 0
@@ -223,20 +247,27 @@ namespace prog6212_poe
                 //generate dictinary of weeks and give default value of calcyulated self study hours
                 for (int i = 0; i < weeks; i++)
                 {
+                    //add week and default value to dictionary
                     module.CompletedHours.Add(i, module.SelfStudyHours);
                 }
             }
         }//end ModuleHoursAssignment method
 
+        //----------------------------------------------------------------------------------------------_GotFocus
+
         //reset after creation:
         private void _GotFocus(object sender, RoutedEventArgs e)
         {
+            //update visability
             messageTextBlock.Visibility = Visibility.Hidden;
         }//end _GotFocus method
+
+        //----------------------------------------------------------------------------------------------ReturnToMainMenuButton_Click
 
         //return to main home page
         private void ReturnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            //open main window
             Window mainWindow = new MainWindow(semesters);
             mainWindow.Show();
             this.Close();
