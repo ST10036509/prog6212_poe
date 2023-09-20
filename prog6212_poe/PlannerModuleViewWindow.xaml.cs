@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using HoursForYourLib;
 
 namespace prog6212_poe
@@ -45,7 +36,7 @@ namespace prog6212_poe
             this.modules = modules;
             this.selectedModule = selectedModule;
             DisplayModuleData();
-        }
+        }//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -91,8 +82,9 @@ namespace prog6212_poe
                 weekComboBox.Items.Add(week.Key + 1);
                 ++weeks;
             }
+            //default selection to first item/week
             weekComboBox.SelectedIndex = 0;
-        }
+        }//end DisplayModuleData method
 
         //----------------------------------------------------------------------------------------------addHoursButton_Click
 
@@ -130,51 +122,20 @@ namespace prog6212_poe
             }
 
             //run method to update the hours in the spceified date/week
-            IdentifyAndUpdateWeek(date);
-        }
+            HoursForYourLib.Calculations calc = new Calculations();
+            var output = calc.IdentifyAndUpdateWeek(date, selectedModule, hoursTextBox.Text);
 
-        //----------------------------------------------------------------------------------------------IdentifyAndUpdateWeek
+            //update the hours text block
+            hoursCompletedTextBlock.Text = selectedModule.CompletedHours[output.Key] + "/" + selectedModule.SelfStudyHours.ToString();
 
-        //method to identify the week and update the hours
-        public void IdentifyAndUpdateWeek(DateTime date)
-        {
-            //local variable declarations:
-            double dayIndex = (date.Subtract(selectedModule.SemesterStartDate).TotalDays) / 7;//calculate an index to check which week the selected date is in
+            //reset the inputs
+            selectedDateDatePicker.Text = null;
+            hoursTextBox.Text = null;
 
-            //loop through the weeks
-            foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
-            {
-                //check if the index is within the selected week
-                if (dayIndex >= week.Key + 1)
-                {
-                    //skip if it is bigger
-                    continue;
-                }
-                else
-                {
-                    //update the hours
-                    selectedModule.CompletedHours[week.Key] -= Double.Parse(hoursTextBox.Text);
-
-                    //check if the hours are less than 0
-                    if (selectedModule.CompletedHours[week.Key] < 0)
-                    {
-                        //set to default if is less than 0
-                        selectedModule.CompletedHours[week.Key] = 0;
-                    }
-
-                    //update the hours text block
-                    hoursCompletedTextBlock.Text = selectedModule.CompletedHours[week.Key] + "/" + selectedModule.SelfStudyHours.ToString();
-
-                    //reset the inputs
-                    selectedDateDatePicker.Text = null;
-                    hoursTextBox.Text = null;
-
-                    //update visability
-                    messageTextBlock.Visibility = Visibility.Visible;
-                    break;
-                }
-            }
-        }//end IdentifyAndUpdateWeek method
+            //update visability
+            messageTextBlock.Visibility = Visibility.Visible;
+            //IdentifyAndUpdateWeek(date);
+        }//end addHoursButton_Click method
 
         //----------------------------------------------------------------------------------------------weekComboBox_SelectionChanged
 

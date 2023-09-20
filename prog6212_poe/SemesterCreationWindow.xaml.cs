@@ -1,22 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Ports;
 using System.Linq;
-using System.Media;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.TextFormatting;
-using System.Windows.Shapes;
 using HoursForYourLib;
 
 namespace prog6212_poe
@@ -98,10 +85,13 @@ namespace prog6212_poe
         //open add module page
         private void AddModleButton_Click(object sender, RoutedEventArgs e)
         {
-                CaptureTextBoxData();
-                Window addModuleWindow = new AddModuleWindow(semesters, modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
-                addModuleWindow.Show();
-                this.Close();
+            //Capture already inputted data to carry over
+            CaptureTextBoxData();
+
+            //open add module window
+            Window addModuleWindow = new AddModuleWindow(semesters, modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
+            addModuleWindow.Show();
+            this.Close();
         }//end AddModleButton_Click method
 
         //----------------------------------------------------------------------------------------------CreateSemesterButton_Click
@@ -158,7 +148,8 @@ namespace prog6212_poe
                             else
                             {
                                 //calculate and assign the self study hours and generate a dictionary for the weeks with base value of  the self study hours
-                                ModuleHoursAssignment(weeks);
+                                HoursForYourLib.Calculations calc = new Calculations();
+                                this.modules = calc.ModuleHoursAssignment(weeks, modules);
 
                                 //create new semester
                                 Semester newSemester = new Semester(semesterNameTextBox.Text, weeks, startDate, modules);
@@ -217,41 +208,6 @@ namespace prog6212_poe
                 semesterStartDate = DEFAULT_DATE;
             }
         }//end CaptureTextBoxData method
-
-        //----------------------------------------------------------------------------------------------ModuleHoursAssignment
-        
-        //calculate and assign each week the defualt value per module
-        public void ModuleHoursAssignment(double weeks)
-        {
-            //loop through modules in a semester
-            foreach (Module module in modules)
-            {
-                //local variable declaration
-                double hoursHolder;
-
-                //calculate the self study hours and store in a temp variable
-                hoursHolder = ((module.Credits * 10) / weeks) - module.ClassHours;
-
-                //check if the hours calculated is a negative number
-                if (hoursHolder < 0)
-                {
-                    //if it is negative then set it to 0
-                    module.SelfStudyHours = 0;
-                }
-                else
-                {
-                    //if it is positive set it to the calculated value
-                    module.SelfStudyHours = hoursHolder;
-                }
-
-                //generate dictinary of weeks and give default value of calcyulated self study hours
-                for (int i = 0; i < weeks; i++)
-                {
-                    //add week and default value to dictionary
-                    module.CompletedHours.Add(i, module.SelfStudyHours);
-                }
-            }
-        }//end ModuleHoursAssignment method
 
         //----------------------------------------------------------------------------------------------_GotFocus
 
