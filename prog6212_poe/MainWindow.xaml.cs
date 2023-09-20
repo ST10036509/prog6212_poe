@@ -28,6 +28,8 @@ namespace prog6212_poe
         //carry over variables:
         private List<Semester> semesters = new List<Semester>();
 
+        //----------------------------------------------------------------------------------------------Constuctors
+
         //Constructor
         public MainWindow()
         {
@@ -40,6 +42,8 @@ namespace prog6212_poe
             InitializeComponent();
             this.semesters = semesters;
         }//end OVERLOADED constructor
+
+        //----------------------------------------------------------------------------------------------Remove Exit Button
 
         //Disable The Window Close Button
         //import .ddl files for the windows api
@@ -68,6 +72,8 @@ namespace prog6212_poe
         }
         //End Disable The Window Close Button
 
+        //----------------------------------------------------------------------------------------------AddSemesterButton_Click
+
         //open semester page
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -76,20 +82,27 @@ namespace prog6212_poe
             this.Close();
         }//end AddSemesterButton_Click method
 
+        //----------------------------------------------------------------------------------------------PlannerBookButton_Click
+
         //open planner page
         private void PlannerBookButton_Click(object sender, RoutedEventArgs e)
         {
+            //check if there are any semesters
             if (semesters.Count() >= 1)
             {
+                //open planner page
                 Window viewSemestersWindow = new PlannerSemestersWindow(semesters);
                 viewSemestersWindow.Show();
                 this.Close();
             }
             else
             {
+                //error message
                  MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou");
             }
         }//end PlannerBookButton_Click method
+
+        //----------------------------------------------------------------------------------------------ExitProgramButton_Click
 
         //close program
         private void ExitProgramButton_Click(object sender, RoutedEventArgs e)

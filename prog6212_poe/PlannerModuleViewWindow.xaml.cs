@@ -108,35 +108,37 @@ namespace prog6212_poe
                 return;
             }
 
-            //IdentifyWeek(date);
-            //UpdateWeek(0);
+            IdentifyAndUpdateWeek(date);
         }
 
-        //public void IdentifyWeek(DateTime date)
-        //{
-        //    double dayIndex = (date.Subtract(selectedModule.SemesterStartDate).Days) / 7;
-
-        //    foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
-        //    {
-        //        int count = selectedModule.CompletedHours.Count();
-
-        //        if (dayIndex >= week.Key + 1)
-        //        {
-        //            break;
-        //        }
-        //        else
-        //        {
-
-        //        }
-
-        //    }
-        //}
-
-        public void UpdateWeek(int week)
+        public void IdentifyAndUpdateWeek(DateTime date)
         {
-            selectedModule.CompletedHours[week] = Double.Parse(hoursTextBox.Text);
-        }
+            double dayIndex = (date.Subtract(selectedModule.SemesterStartDate).TotalDays) / 7;
 
+            foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
+            {
+
+                if (dayIndex >= week.Key + 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    selectedModule.CompletedHours[week.Key] -= Double.Parse(hoursTextBox.Text);
+                    if (selectedModule.CompletedHours[week.Key] < 0)
+                    {
+                        selectedModule.CompletedHours[week.Key] = 0;
+                    }
+                    hoursCompletedTextBlock.Text = selectedModule.CompletedHours[week.Key] + "/" + selectedModule.SelfStudyHours.ToString();
+                    selectedDateDatePicker.Text = null;
+                    hoursTextBox.Text = null;
+                    messageTextBlock.Visibility = Visibility.Visible;
+                    break;
+                }
+            }
+        }//end IdentifyAndUpdateWeek method
+
+        //method to update when a new week is selected
         private void weekComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedWeek = Int32.Parse(weekComboBox.SelectedItem.ToString()) - 1;
@@ -146,7 +148,9 @@ namespace prog6212_poe
 
             var currentStartDate = selectedDateDatePicker.DisplayDateStart.Value;
             selectedDateDatePicker.DisplayDateEnd = currentStartDate.AddDays(6);
-        }
+
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end weekComboBox_SelectionChanged method
 
         //return to modules view page
         private void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
@@ -155,6 +159,12 @@ namespace prog6212_poe
             viewModulesWindow.Show();
             this.Close();
         }//end returnToModulesViewButton_Click method
+
+        ////reset after hours are added:
+        private void _GotFocus(object sender, RoutedEventArgs e)
+        {
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end _GotFocus method
     }
 }
 //_______________________________...oooOOO000_End_Of_File_000OOOooo..._______________________________

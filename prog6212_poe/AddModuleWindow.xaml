@@ -169,6 +169,7 @@
             GotFocus="_GotFocus"
         />
 
+        <!--Add Success Message TextBox-->
         <TextBlock
             x:Name="messageTextBlock"
             Grid.Column="2" Grid.Row="13"

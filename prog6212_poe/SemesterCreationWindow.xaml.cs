@@ -139,25 +139,33 @@ namespace prog6212_poe
                         }
                         else
                         {
-                            //calculate and assign the self study hours and generate a dictionary for the weeks with base value of  the self study hours
-                            ModuleHoursAssignment(weeks);
 
-                            //create new semester
-                            Semester newSemester = new Semester(semesterNameTextBox.Text, weeks, startDate, modules);
-                            //add semester to list
-                            semesters.Add(newSemester);
+                            if (weeks <= 0)
+                            {
+                                MessageBox.Show("Please Make Sure Your Number of Weeks Is A Positive Number And Not ZERO!", "HoursForYou");
+                            }
+                            else
+                            {
+                                //calculate and assign the self study hours and generate a dictionary for the weeks with base value of  the self study hours
+                                ModuleHoursAssignment(weeks);
 
-                            //clear TextBox values
-                            semesterNameTextBox.Text = "";
-                            numberOfWeeksTextBox.Text = "";
-                            startDateDatePicker.Text = "";
+                                //create new semester
+                                Semester newSemester = new Semester(semesterNameTextBox.Text, weeks, startDate, modules);
+                                //add semester to list
+                                semesters.Add(newSemester);
 
-                            //display success message
-                            messageTextBlock.Visibility = Visibility.Visible;
+                                //clear TextBox values
+                                semesterNameTextBox.Text = "";
+                                numberOfWeeksTextBox.Text = "";
+                                startDateDatePicker.Text = "";
 
-                            Window mainWindow = new MainWindow(semesters);
-                            mainWindow.Show();
-                            this.Close();
+                                //display success message
+                                messageTextBlock.Visibility = Visibility.Visible;
+
+                                Window mainWindow = new MainWindow(semesters);
+                                mainWindow.Show();
+                                this.Close();
+                            }
                         }
                     }
                 }

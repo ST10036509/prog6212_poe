@@ -107,7 +107,7 @@
 
         <!--Add Module Information Title TextBlock-->
         <TextBlock
-            Grid.Column="1" Grid.Row="4"
+            Grid.Column="1" Grid.Row="6"
             HorizontalAlignment="Center"
             Text="Module Information:"
             Margin="0,0,0,0"
@@ -118,7 +118,7 @@
 
         <!--Add Add Hours Title TextBlock-->
         <TextBlock
-            Grid.Column="3" Grid.Row="4"
+            Grid.Column="3" Grid.Row="6"
             HorizontalAlignment="Center"
             Text="Add Hours:"
             Margin="0,0,0,0"
@@ -129,7 +129,7 @@
 
         <!--Add Credits Title and Output TextBlock-->
         <TextBlock
-            Grid.Column="1" Grid.Row="5"   
+            Grid.Column="1" Grid.Row="7"   
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Text="Credits:"
@@ -139,7 +139,7 @@
             FontWeight="DemiBold"
         />
         <TextBlock
-            Grid.Column="1" Grid.Row="6"
+            Grid.Column="1" Grid.Row="8"
             x:Name="creditsTextBlock"
             HorizontalAlignment="Center"
             Text="num_credits"
@@ -151,7 +151,7 @@
 
         <!--Add Date Title TextBlock and Input Date Picker-->
         <TextBlock
-            Grid.Column="3" Grid.Row="5"   
+            Grid.Column="3" Grid.Row="7"   
             HorizontalAlignment="left"
             VerticalAlignment="Center"
             Text="Date:"
@@ -162,7 +162,7 @@
         />
         <DatePicker
             x:Name="selectedDateDatePicker"
-            Grid.Column="3" Grid.Row="5"
+            Grid.Column="3" Grid.Row="7"
             VerticalAlignment="Center"
             HorizontalAlignment="Right"
             Height="28.6"
@@ -174,6 +174,7 @@
             BorderThickness="0.7"
             Background="WhiteSmoke"
             Cursor="Hand" FirstDayOfWeek="Monday"
+            GotFocus="_GotFocus"
         >
             <DatePicker.Foreground>
                 <SolidColorBrush Color="Black" Opacity="0.6"/>
@@ -182,9 +183,9 @@
 
         <!-- Add Hours Button-->
         <Button x:Name="addHoursButton"
-            Grid.Column="3" Grid.Row="7"
+            Grid.Column="3" Grid.Row="10"
             Content="Add Hours"
-            Margin="0,10,0,0"
+            Margin="0,0,0,10"
             Background="WhiteSmoke" Foreground="Black"
             FontSize="20" FontWeight="DemiBold"
             BorderThickness="0.7"
@@ -194,7 +195,7 @@
 
         <!--Add Hours Title TextBlock and Input TextBox-->
         <TextBlock
-            Grid.Column="3" Grid.Row="6"   
+            Grid.Column="3" Grid.Row="8"   
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Text="Hours:"
@@ -204,7 +205,7 @@
             FontWeight="DemiBold"
         />
         <TextBox
-            Grid.Column="3" Grid.Row="6"    
+            Grid.Column="3" Grid.Row="8"    
             x:Name="hoursTextBox"
             VerticalAlignment="Center"
             HorizontalAlignment="Right"
@@ -215,27 +216,41 @@
             BorderThickness="0.7"
             Background="WhiteSmoke"
             Cursor="Hand"
+            GotFocus="_GotFocus"
         >
             <TextBox.Foreground>
                 <SolidColorBrush Color="Black" Opacity="0.6"/>
             </TextBox.Foreground>
         </TextBox>
 
+        <!--Add Success Message TextBox-->
+        <TextBlock
+            x:Name="messageTextBlock"
+            Grid.Column="3" Grid.Row="9"
+            Text="Successfully Added A Module!"
+            HorizontalAlignment="Center"
+            FontWeight="Bold"
+            FontSize="15"
+            Foreground="Green"
+            Visibility="Hidden"
+        />
         <!--Add Select A Week Title and Input ComboBox-->
         <TextBlock
-            Grid.Column="1" Grid.Row="7"   
+            Grid.Column="2" Grid.Row="4"   
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Text="Select a Week:"
-            Margin="0,0,0,0"
+            Margin="0,10,0,5"
             FontSize="18"
             Foreground="#FF6F6F6F"
             FontWeight="DemiBold"
         />
         <ComboBox x:Name="weekComboBox"
-                  Grid.Column="1" Grid.Row="8"
-                  Width="200"
-                  SelectionChanged="weekComboBox_SelectionChanged"/>
+                  Grid.Column="2" Grid.Row="5"
+                  Margin="0,0,0,0"
+                  Width="50"
+                  SelectionChanged="weekComboBox_SelectionChanged"
+        />
         
         <!--Add Hours Completed Title and Output TextBlock-->
         <TextBlock
@@ -254,7 +269,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Text="hours_compt/hrs_p_week"
-            Margin="0,0,0,10"
+            Margin="0,0,0,0"
             FontSize="18"
             Foreground="Black"
             FontWeight="Bold"
