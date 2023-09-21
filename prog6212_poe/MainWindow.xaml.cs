@@ -65,6 +65,7 @@ namespace prog6212_poe
         //open semester page
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
+            //open semester creation window
             Window createSemesterWindow = new SemesterCreationWindow(semesters);
             createSemesterWindow.Show();
             this.Close();

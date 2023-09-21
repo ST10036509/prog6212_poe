@@ -227,7 +227,7 @@
         <TextBlock
             x:Name="messageTextBlock"
             Grid.Column="3" Grid.Row="9"
-            Text="Successfully Added A Module!"
+            Text="Successfully Added Your Hours!"
             HorizontalAlignment="Center"
             FontWeight="Bold"
             FontSize="15"

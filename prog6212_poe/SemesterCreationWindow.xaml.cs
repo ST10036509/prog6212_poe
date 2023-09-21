@@ -199,7 +199,7 @@ namespace prog6212_poe
             if (!weeksIsParsable)
             {
                 //set default value
-                semesterNumberOfWeeks = 0;
+                semesterNumberOfWeeks = 1;
             }
             //if start date is an invalid inout then pass a default value
             if (!startDateIsParsable)

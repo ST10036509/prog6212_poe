@@ -121,6 +121,14 @@ namespace prog6212_poe
                 return;
             }
 
+            //check if hour is positive
+            if (hours < 0)
+            {
+                //error message if hours is negative
+                MessageBox.Show("Please Ensure Hours Is A POSITIVE Number!");
+                return;
+            }
+
             //run method to update the hours in the spceified date/week
             HoursForYourLib.Calculations calc = new Calculations();
             var output = calc.IdentifyAndUpdateWeek(date, selectedModule, hoursTextBox.Text);

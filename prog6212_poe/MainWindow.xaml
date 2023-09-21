@@ -51,35 +51,35 @@
 
         <!-- Add Semester Button -->
         <Button x:Name="addSemesterButton" 
-        Grid.Column="2" Grid.Row="2" 
-        Content="New Semester" 
-        Margin="0,70,0,40"
-        Background="#77d17f" Foreground="WhiteSmoke"
-        FontSize="20"  FontWeight="DemiBold"
-        BorderThickness="0"
-        Click="AddSemesterButton_Click" Cursor="Hand"
+            Grid.Column="2" Grid.Row="2" 
+            Content="New Semester" 
+            Margin="0,70,0,40"
+            Background="#77d17f" Foreground="WhiteSmoke"
+            FontSize="20"  FontWeight="DemiBold"
+            BorderThickness="0"
+            Click="AddSemesterButton_Click" Cursor="Hand"
         />
 
         <!--Open Recipe Book Button-->
         <Button x:Name="plannerButton" 
-        Grid.Column="2" Grid.Row="3"
-        Content="Planner"
-        Margin="0,0,0,40"
-        Background="#77d17f" Foreground="WhiteSmoke"
-        FontSize="20" FontWeight="DemiBold"
-        BorderThickness="0"
-        Click="PlannerBookButton_Click" Cursor="Hand"
+            Grid.Column="2" Grid.Row="3"
+            Content="Planner"
+            Margin="0,0,0,40"
+            Background="#77d17f" Foreground="WhiteSmoke"
+            FontSize="20" FontWeight="DemiBold"
+            BorderThickness="0"
+            Click="PlannerBookButton_Click" Cursor="Hand"
         />
 
         <!-- Exit Program Button-->
         <Button x:Name="exitProgramButton" 
-        Grid.Column="2" Grid.Row="4" 
-        Content="Exit" 
-        Margin="0,0"
-        Background="#ff3343" Foreground="WhiteSmoke"
-        FontSize="20" FontWeight="DemiBold"
-        BorderThickness="0"
-        Click="ExitProgramButton_Click" Cursor="Hand"
+            Grid.Column="2" Grid.Row="4" 
+            Content="Exit" 
+            Margin="0,0"
+            Background="#ff3343" Foreground="WhiteSmoke"
+            FontSize="20" FontWeight="DemiBold"
+            BorderThickness="0"
+            Click="ExitProgramButton_Click" Cursor="Hand"
         />
         
     </Grid>

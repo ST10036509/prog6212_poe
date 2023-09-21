@@ -106,19 +106,33 @@ namespace prog6212_poe
                     }
                     else
                     {
-                        //create new module
-                        Module newModule = new Module(moduleNameTextBox.Text, moduleCodeTextBox.Text, credits, hours, startDate);
-                        //add module to list
-                        modules.Add(newModule);
+                        if (hours < 0)
+                        {
+                            MessageBox.Show("Please Ensure The Hours Is A POSITIVE Number!", "HoursForYou");
+                        }
+                        else
+                        {
+                            if (credits < 0)
+                            {
+                                MessageBox.Show("Please Ensure The Credits Is A POSITIVE Number!", "HoursForYou");
+                            }
+                            else
+                            {
+                                //create new module
+                                Module newModule = new Module(moduleNameTextBox.Text, moduleCodeTextBox.Text, credits, hours, startDate);
+                                //add module to list
+                                modules.Add(newModule);
 
-                        //clear fields
-                        moduleNameTextBox.Text = "";
-                        moduleCodeTextBox.Text = "";
-                        numberOfCreditsTextBox.Text = "";
-                        classHoursPerWeekTextBox.Text = "";
+                                //clear fields
+                                moduleNameTextBox.Text = "";
+                                moduleCodeTextBox.Text = "";
+                                numberOfCreditsTextBox.Text = "";
+                                classHoursPerWeekTextBox.Text = "";
 
-                        //display success message
-                        messageTextBlock.Visibility = Visibility.Visible;
+                                //display success message
+                                messageTextBlock.Visibility = Visibility.Visible;
+                            }
+                        }
                     }
                 }
             }   
