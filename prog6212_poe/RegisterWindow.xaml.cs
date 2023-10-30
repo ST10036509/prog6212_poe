@@ -23,5 +23,15 @@ namespace prog6212_poe
         {
             InitializeComponent();
         }
+
+        private void returnToLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void registerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
