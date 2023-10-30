@@ -23,8 +23,7 @@ namespace prog6212_poe
     public partial class LoginWindow : Window
     {
         //declare GLOBAL variables:
-        SqlConnection cnn;
-        bool usernameExists;
+        readonly private SqlConnection cnn;
 
         //----------------------------------------------------------------------------------------------constructor
 
@@ -32,8 +31,11 @@ namespace prog6212_poe
         {
             InitializeComponent();
 
+            //store the connection string in the application properties
+            App.Current.Properties["ConnectionString"] = @"Data Source=LAPTOP-OMEN;Initial Catalog=HoursForYouDB;Integrated Security=True";
+
             //establish database connection string
-            string connectionString = @"Data Source=LAPTOP-OMEN;Initial Catalog=HoursForYouDB;Integrated Security=True";
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
 
             //create a connection usning connection string
             cnn = new SqlConnection(connectionString);
@@ -133,7 +135,7 @@ namespace prog6212_poe
                 //if a result is returned
                 if (await reader.ReadAsync())
                 {
-                    //
+                    //fetch the userid and password for return
                     int userID = reader.GetInt32(0);
                     string password = reader.GetString(1);
                     return (userID, password);

@@ -24,8 +24,8 @@ namespace prog6212_poe
     public partial class RegisterWindow : Window
     {
         //declare GLOBAL variables:
-        SqlConnection cnn;
-        bool usernameExists;
+        readonly private SqlConnection cnn;
+        private bool usernameExists;
 
         //----------------------------------------------------------------------------------------------RegisterWindow
         //Constructor
@@ -34,7 +34,7 @@ namespace prog6212_poe
             InitializeComponent();
 
             //establish database connection string
-            string connectionString = @"Data Source=LAPTOP-OMEN;Initial Catalog=HoursForYouDB;Integrated Security=True";
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
 
             //create a connection usning connection string
             cnn = new SqlConnection(connectionString);
