@@ -108,7 +108,6 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="_GotFocus"
         />
 
         <!-- Password TextBlock and TextBox -->
@@ -129,7 +128,6 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="_GotFocus"
         />
 
         <!-- Login Button -->

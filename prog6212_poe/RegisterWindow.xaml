@@ -109,7 +109,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="_GotFocus"
+            TextChanged="usernameTextBox_TextChanged"
         />
 
         <!-- Password TextBlock and TextBox -->
@@ -129,7 +129,6 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="_GotFocus"
         />
 
         <!--Password Confirmation TextBlock and TextBox-->
@@ -149,7 +148,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            GotFocus="_GotFocus"
+            TextChanged="confirmationPasswordTextBox_TextChanged"
         />
 
         <!-- Regsiter Button-->
@@ -166,7 +165,7 @@
         <!-- Message TextBox-->
         <TextBlock
             x:Name="messageTextBlock"
-            Grid.Column="2" Grid.Row="12"
+            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="12"
             Text="Semester Created Successfully!"
             HorizontalAlignment="Center"
             FontWeight="Bold"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HoursForYourLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,17 +27,23 @@ namespace prog6212_poe
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //open main window window
+            Window mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
         }
 
         private void registerButton_Click(object sender, MouseButtonEventArgs e)
         {
-
+            //open register window
+            Window registerWindow = new RegisterWindow();
+            registerWindow.Show();
+            this.Close();
         }
 
         private void exitProgramButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Environment.Exit(0);
         }
 
     }
