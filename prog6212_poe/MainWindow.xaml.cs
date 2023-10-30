@@ -15,6 +15,7 @@ namespace prog6212_poe
     {
         //carry over variables:
         private List<Semester> semesters = new List<Semester>();
+        int userID;
 
         //----------------------------------------------------------------------------------------------Constuctors
 
@@ -22,6 +23,13 @@ namespace prog6212_poe
         public MainWindow()
         {
             InitializeComponent();
+        }//end constructor
+
+        //OVERLOADED DB Constructor
+        public MainWindow(int userID)
+        {
+            InitializeComponent();
+            this.userID = userID;
         }//end constructor
 
         //OVERLAODED constructor
