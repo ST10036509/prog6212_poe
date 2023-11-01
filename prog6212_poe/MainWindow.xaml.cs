@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using HoursForYourLib;
@@ -14,30 +16,33 @@ namespace prog6212_poe
     public partial class MainWindow : Window
     {
         //carry over variables:
-        private List<Semester> semesters = new List<Semester>();
+        //private List<Semester> semesters = new List<Semester>();
         int userID;
+        readonly private SqlConnection cnn;
 
         //----------------------------------------------------------------------------------------------Constuctors
 
-        //Constructor
+        //OVERLOADED DB Constructor (LOGIN/REGISTER >> MAIN WINDOW)
         public MainWindow()
         {
             InitializeComponent();
+            userID = (int)App.Current.Properties["UserID"];
+
+            //establish database connection string
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
+
+            //create a connection usning connection string
+            cnn = new SqlConnection(connectionString);
+            //open the connection
+            cnn.Open();
         }//end constructor
 
-        //OVERLOADED DB Constructor
-        public MainWindow(int userID)
-        {
-            InitializeComponent();
-            this.userID = userID;
-        }//end constructor
-
-        //OVERLAODED constructor
-        public MainWindow(List<Semester> semesters)
-        {
-            InitializeComponent();
-            this.semesters = semesters;
-        }//end OVERLOADED constructor
+        ////OVERLAODED constructor
+        //public MainWindow(List<Semester> semesters)
+        //{
+        //    InitializeComponent();
+        //    this.semesters = semesters;
+        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -74,7 +79,7 @@ namespace prog6212_poe
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
             //open semester creation window
-            Window createSemesterWindow = new SemesterCreationWindow(semesters);
+            Window createSemesterWindow = new SemesterCreationWindow();
             createSemesterWindow.Show();
             this.Close();
         }//end AddSemesterButton_Click method
@@ -82,13 +87,15 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------PlannerBookButton_Click
 
         //open planner page
-        private void PlannerBookButton_Click(object sender, RoutedEventArgs e)
+        private async void PlannerBookButton_Click(object sender, RoutedEventArgs e)
         {
+            var semesterExists = await Task.Run(() => VerifySemestersDatabase());
+
             //check if there are any semesters
-            if (semesters.Count() >= 1)
+            if (semesterExists)
             {
                 //open planner page
-                Window viewSemestersWindow = new PlannerSemestersWindow(semesters);
+                Window viewSemestersWindow = new PlannerSemestersWindow();
                 viewSemestersWindow.Show();
                 this.Close();
             }
@@ -98,6 +105,19 @@ namespace prog6212_poe
                  MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou");
             }
         }//end PlannerBookButton_Click method
+
+        public async Task<bool> VerifySemestersDatabase()
+        {
+            using (cnn)
+            {
+                string query = "SELECT COUNT(*) FROM Semesters WHERE UserID = @UserID;";
+                SqlCommand command = new SqlCommand(query, cnn);
+                command.Parameters.AddWithValue("@UserID", userID);
+
+                int semesterCount = (int)await command.ExecuteScalarAsync();
+                return semesterCount > 0;
+            }
+        }//end VerifySemestersDatabase method
 
         //----------------------------------------------------------------------------------------------ExitProgramButton_Click
 

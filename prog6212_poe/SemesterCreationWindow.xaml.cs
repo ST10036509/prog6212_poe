@@ -1,7 +1,11 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Interop;
 using HoursForYourLib;
@@ -15,27 +19,49 @@ namespace prog6212_poe
     {
         //CONSTANTS
         static DateTime DEFAULT_DATE = DateTime.Today;
+        readonly private SqlConnection cnn;
 
         //carry over variables:
-        private List<Semester> semesters = new List<Semester>();
+        //private List<Semester> semesters = new List<Semester>();
         private List<Module> modules = new List<Module>();
         private string semesterName = "";
         private double semesterNumberOfWeeks = 0;
         private DateTime semesterStartDate = DEFAULT_DATE;
+        int userID;
 
         //----------------------------------------------------------------------------------------------Constructors
 
-        //constructor
+        //constructor (MAIN WINDOW >> CREATE SEMESTER)
         public SemesterCreationWindow()
         {
             InitializeComponent();
+
+            userID = (int)App.Current.Properties["UserID"];
+
+            //establish database connection string
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
+
+            //create a connection usning connection string
+            cnn = new SqlConnection(connectionString);
+            //open the connection
+            cnn.Open();
         }//end constructor
 
-        //OVERLOADED constructor
-        public SemesterCreationWindow(List<Semester> semesters, List<Module> modules, string name, double weeks, DateTime date)
+        //OVERLOADED constructor (ADD MODULE >> CREATE SEMESTER)
+        public SemesterCreationWindow(List<Module> modules, string name, double weeks, DateTime date)
         {
             InitializeComponent();
-            this.semesters = semesters;
+
+            userID = (int)App.Current.Properties["UserID"];
+
+            //establish database connection string
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
+
+            //create a connection usning connection string
+            cnn = new SqlConnection(connectionString);
+            //open the connection
+            cnn.Open();
+
             this.modules = modules;
             this.semesterName = name;
             this.semesterNumberOfWeeks = weeks;
@@ -44,12 +70,25 @@ namespace prog6212_poe
 
         }//end OVERLOADED constructor
 
-        //OVERLOADED constructor
-        public SemesterCreationWindow(List<Semester> semesters)
-        {
-            InitializeComponent();
-            this.semesters = semesters;
-        }//end OVERLOADED constructor
+        ////OVERLOADED constructor
+        //public SemesterCreationWindow(List<Semester> semesters, List<Module> modules, string name, double weeks, DateTime date)
+        //{
+        //    InitializeComponent();
+        //    this.semesters = semesters;
+        //    this.modules = modules;
+        //    this.semesterName = name;
+        //    this.semesterNumberOfWeeks = weeks;
+        //    this.semesterStartDate = date;
+        //    FillTextBoxData();
+
+        //}//end OVERLOADED constructor
+
+        ////OVERLOADED constructor
+        //public SemesterCreationWindow(List<Semester> semesters)
+        //{
+        //    InitializeComponent();
+        //    this.semesters = semesters;
+        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -89,7 +128,7 @@ namespace prog6212_poe
             CaptureTextBoxData();
 
             //open add module window
-            Window addModuleWindow = new AddModuleWindow(semesters, modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
+            Window addModuleWindow = new AddModuleWindow(modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
             addModuleWindow.Show();
             this.Close();
         }//end AddModleButton_Click method
@@ -97,7 +136,7 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------CreateSemesterButton_Click
 
         //open create semester page
-        private void CreateSemesterButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
             //declare variables
             double weeks;
@@ -154,7 +193,13 @@ namespace prog6212_poe
                                 //create new semester
                                 Semester newSemester = new Semester(semesterNameTextBox.Text, weeks, startDate, modules);
                                 //add semester to list
-                                semesters.Add(newSemester);
+                                //semesters.Add(newSemester);
+                                var semesterID = await Task.Run(() => AddSemesterToDatabase(newSemester));
+
+                                foreach (Module module in modules)
+                                {
+                                    await Task.Run(() => AddModuleToDatabase(module, semesterID));
+                                }
 
                                 //clear TextBox values
                                 semesterNameTextBox.Text = "";
@@ -165,7 +210,7 @@ namespace prog6212_poe
                                 messageTextBlock.Visibility = Visibility.Visible;
 
                                 //open main window
-                                Window mainWindow = new MainWindow(semesters);
+                                Window mainWindow = new MainWindow();
                                 mainWindow.Show();
                                 this.Close();
                             }
@@ -174,6 +219,41 @@ namespace prog6212_poe
                 }
             }
         }//end CreateSemesterButton_Click method
+
+        public async Task<int> AddSemesterToDatabase(Semester newSemester)
+        {
+            string query = "INSERT INTO Semesters (UserID, SemesterName, NumberOfWeeks, StartDate) OUTPUT INSERTED.SemesterID VALUES (@UserID, @SemesterName, @NumberOfWeeks, @StartDate);";
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@UserID",userID);
+            command.Parameters.AddWithValue("@SemesterName", newSemester.SemesterName);
+            command.Parameters.AddWithValue("@NumberOfWeeks", newSemester.NumberOfWeeks);
+            command.Parameters.AddWithValue("@StartDate", newSemester.StartDate);
+
+            int semesterID = (int)await command.ExecuteScalarAsync();
+            return semesterID;
+            
+        }//end AddSemesterToDatabase method
+
+        public async Task AddModuleToDatabase(Module newModule, int semesterID)
+        {
+            Dictionary<string, double> stringDictionary = newModule.CompletedHours.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            var jsonCompletedHours = serializer.Serialize(stringDictionary);
+
+            string query = "INSERT INTO Modules (SemesterID, ModuleName, ModuleCode, NumberOfCredits, NumberOfHoursPerWeek, StartDate, SelfStudyHours, CompletedHours) VALUES (@SemesterID, @ModuleName, @ModuleCode, @NumberOfCredits, @NumberOfHoursPerWeek, @StartDate, @SelfStudyHours, @CompletedHours);";
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@SemesterID", semesterID);
+            command.Parameters.AddWithValue("@ModuleName", newModule.ModuleName);
+            command.Parameters.AddWithValue("@ModuleCode", newModule.ModuleCode);
+            command.Parameters.AddWithValue("@NumberOfCredits", newModule.Credits);
+            command.Parameters.AddWithValue("@NumberOfHoursPerWeek", newModule.ClassHours);
+            command.Parameters.AddWithValue("@StartDate", newModule.SemesterStartDate);
+            command.Parameters.AddWithValue("@SelfStudyHours", newModule.SelfStudyHours);
+            command.Parameters.AddWithValue("@CompletedHours", jsonCompletedHours);
+
+            await command.ExecuteNonQueryAsync();
+        }//end AddModuleToDatabase
 
         //----------------------------------------------------------------------------------------------FillTextBoxData
 
@@ -224,7 +304,7 @@ namespace prog6212_poe
         private void ReturnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
             //open main window
-            Window mainWindow = new MainWindow(semesters);
+            Window mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
         }//end ReturnToMainMenuButton_Click method

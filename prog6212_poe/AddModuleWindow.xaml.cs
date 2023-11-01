@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using HoursForYourLib;
@@ -13,7 +15,7 @@ namespace prog6212_poe
     public partial class AddModuleWindow : Window
     {
         //carry over variables:
-        private List<Semester> semesters = new List<Semester>();
+        //private List<Semester> semesters = new List<Semester>();
         private List<Module> modules = new List<Module>();
         private string semesterName;
         private double numberOfWeeks;
@@ -27,17 +29,28 @@ namespace prog6212_poe
             InitializeComponent();
         }//end constructor
 
-        //OVERLOADED Constructor
-        public AddModuleWindow(List<Semester> semesters, List<Module> modules,
+        //OVERLOADED Constructor (CREATE SEMESTER >> ADD MODULE)
+        public AddModuleWindow(List<Module> modules,
                                string name, double weeks, DateTime date)
         {
             InitializeComponent();
-            this.semesters = semesters;
             this.modules = modules;
             this.semesterName = name;
             this.numberOfWeeks = weeks;
             this.startDate = date;
         }//end OVERLOADED constructor
+
+        ////OVERLOADED Constructor
+        //public AddModuleWindow(List<Semester> semesters, List<Module> modules,
+        //                       string name, double weeks, DateTime date)
+        //{
+        //    InitializeComponent();
+        //    this.semesters = semesters;
+        //    this.modules = modules;
+        //    this.semesterName = name;
+        //    this.numberOfWeeks = weeks;
+        //    this.startDate = date;
+        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -153,7 +166,7 @@ namespace prog6212_poe
         private void ReturnToCreateSemesterButton_Click(object sender, RoutedEventArgs e)
         {
             //open semester creation window
-            Window createSemesterWindow = new SemesterCreationWindow(semesters, modules, semesterName, numberOfWeeks, startDate);
+            Window createSemesterWindow = new SemesterCreationWindow(modules, semesterName, numberOfWeeks, startDate);
             createSemesterWindow.Show();
             this.Close();
         }//end returnToCreateSemesterButton_Click method

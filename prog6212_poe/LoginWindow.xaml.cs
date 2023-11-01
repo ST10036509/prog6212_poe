@@ -49,7 +49,7 @@ namespace prog6212_poe
         {
             //fetch entered data
             string username = usernameTextBox.Text;
-            string password = passwordTextBox.Text;
+            string password = passwordTextBox.Password;
             //check if a matching user exists in the database and return the password if it does
             (int userID, string dbPassword) = await Task.Run(() => GetPasswordForUsername(username));
 
@@ -78,11 +78,13 @@ namespace prog6212_poe
                 //if the password is valid
                 else
                 {
+                    App.Current.Properties["UserID"] = userID;
+
                     //close database connection
                     cnn.Close();
 
                     //open main window window
-                    Window mainWindow = new MainWindow(userID);
+                    Window mainWindow = new MainWindow();
                     mainWindow.Show();
                     this.Close();
                 }

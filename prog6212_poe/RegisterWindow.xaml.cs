@@ -28,6 +28,7 @@ namespace prog6212_poe
         private bool usernameExists;
 
         //----------------------------------------------------------------------------------------------RegisterWindow
+
         //Constructor
         public RegisterWindow()
         {
@@ -151,11 +152,13 @@ namespace prog6212_poe
                 //add user to database
                 var userID = await Task.Run(() => AddUser(username, hashedPassword));
 
+                App.Current.Properties["UserID"] = userID;
+
                 //close database connection
                 cnn.Close();
 
                 //open main window 
-                Window mainWindow = new MainWindow(userID);
+                Window mainWindow = new MainWindow();
                 mainWindow.Show();
                 this.Close();
             }

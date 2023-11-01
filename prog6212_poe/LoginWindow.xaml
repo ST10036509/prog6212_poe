@@ -120,7 +120,7 @@
             Foreground="#FF565656"
             FontWeight="DemiBold"
         />
-        <TextBox
+        <PasswordBox
             x:Name="passwordTextBox"
             Grid.Column="2" Grid.Row="8"
             FontSize="18"

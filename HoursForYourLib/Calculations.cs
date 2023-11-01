@@ -31,7 +31,7 @@ namespace HoursForYourLib
                     module.SelfStudyHours = hoursHolder;
                 }
 
-                //generate dictinary of weeks and give default value of calcyulated self study hours
+                //generate dictinary of weeks and give default value of calculated self study hours
                 for (int i = 0; i < weeks; i++)
                 {
                     //add week and default value to dictionary

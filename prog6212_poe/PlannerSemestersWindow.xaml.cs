@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using HoursForYourLib;
 
@@ -16,6 +19,8 @@ namespace prog6212_poe
     {
         //carry over variables:
         List<Semester> semesters = new List<Semester>();
+        readonly private SqlConnection cnn;
+        int userID;
 
         //----------------------------------------------------------------------------------------------Constructors
 
@@ -23,6 +28,17 @@ namespace prog6212_poe
         public PlannerSemestersWindow()
         {
             InitializeComponent();
+
+            userID = (int)App.Current.Properties["UserID"];
+
+            //establish database connection string
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
+
+            //create a connection usning connection string
+            cnn = new SqlConnection(connectionString);
+            //open the connection
+            cnn.Open();
+
             DisplaySemesters();
         }//end constructor
 
@@ -67,17 +83,53 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------DisplaySemesters
 
         //display the semesters in the list view
-        public void DisplaySemesters()        
+        public async void DisplaySemesters()        
         {
-            //use LINQ to get semester names from the list of semesters
-            var myItems = semesters.Select(semester => new MySemesterItem
-            {
-                Name = semester.SemesterName,
-            }).ToList();
+            var semesterNames = await Task.Run(() => GetSemesterNames());
 
-            //add names to list view
-            semestersListView.ItemsSource = myItems;
+            semestersListView.ItemsSource = semesterNames;
+
+            //foreach (string semesterName in semesterNames)
+            //{
+            //    semestersListView.Items.Add(new ListViewItem(semesterNames));
+            //}
+
+            //use LINQ to get semester names from the list of semesters
+            //var myItems = semesters.Select(semester => new MySemesterItem
+            //{
+            //    Name = semester.SemesterName,
+            //}).ToList();
+
+            ////add names to list view
+            //semestersListView.ItemsSource = myItems;
         }//end DisplaySemsters method 
+
+        public async Task<List<MySemesterItem>> GetSemesterNames()
+        {
+            //List<string> semesterNames = new List<string>();
+            var myItems = new List<MySemesterItem>();
+
+            using (cnn)
+            {
+                string query = "SELECT SemesterName FROM Semesters WHERE UserID = @UserID";
+                SqlCommand command = new SqlCommand(query, cnn);
+                command.Parameters.AddWithValue("@UserID", userID);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        //semesterNames.Add(reader["SemesterName"].ToString());
+                        myItems.Add(new MySemesterItem
+                        {
+                            Name = reader["SemesterName"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return myItems;
+        }//end GetSemesterNames method
 
         //----------------------------------------------------------------------------------------------MySemesterItem Class
 
@@ -115,7 +167,7 @@ namespace prog6212_poe
         private void returnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
             //open main window
-            Window mainWindow = new MainWindow(semesters);
+            Window mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
         }//end returnToMainMenuButton_Click method
