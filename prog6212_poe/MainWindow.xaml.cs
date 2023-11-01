@@ -26,6 +26,7 @@ namespace prog6212_poe
         public MainWindow()
         {
             InitializeComponent();
+
             userID = (int)App.Current.Properties["UserID"];
 
             //establish database connection string

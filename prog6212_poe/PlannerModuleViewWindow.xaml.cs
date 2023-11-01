@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data.SqlClient;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -18,6 +22,9 @@ namespace prog6212_poe
         List<Module> modules = new List<Module>();
         Module selectedModule;
         int weeks = 0;
+        int moduleID;
+        int semesterID;
+        readonly private SqlConnection cnn;
 
         //----------------------------------------------------------------------------------------------Constructors
 
@@ -27,16 +34,35 @@ namespace prog6212_poe
             InitializeComponent();
         }//end constructor
 
-
-        //OVERLOADED constructor
-        public PlannerModuleViewWindow(List<Semester> semesters, List<Module> modules, Module selectedModule)
+        //OVERLOADED DB Constructor
+        public PlannerModuleViewWindow(int moduleID, int semesterID)
         {
             InitializeComponent();
-            this.semesters = semesters;
-            this.modules = modules;
-            this.selectedModule = selectedModule;
+
+            //establish database connection string
+            var connectionString = App.Current.Properties["ConnectionString"] as String;
+
+            //create a connection usning connection string
+            cnn = new SqlConnection(connectionString);
+            //open the connection
+            cnn.Open();
+
+            this.moduleID = moduleID;
+            this.semesterID = semesterID;
+
             DisplayModuleData();
-        }//end OVERLOADED constructor
+        }//end constructor
+
+
+        ////OVERLOADED constructor
+        //public PlannerModuleViewWindow(List<Semester> semesters, List<Module> modules, Module selectedModule)
+        //{
+        //    InitializeComponent();
+        //    this.semesters = semesters;
+        //    this.modules = modules;
+        //    this.selectedModule = selectedModule;
+        //    DisplayModuleData();
+        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -69,22 +95,68 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------DisplayModuleData
 
         //method to display module data
-        public void DisplayModuleData()
+        public async void DisplayModuleData()
         {
+            var selectedModule = await Task.Run(() => GetModuleByIndex());
+
             //display module data
             moduleNameTextBlock.Text = selectedModule.ModuleName;
             moduleCodeTextBlock.Text = selectedModule.ModuleCode;
             creditsTextBlock.Text = selectedModule.Credits.ToString();
 
             //display semester data
-            foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
-            {
-                weekComboBox.Items.Add(week.Key + 1);
-                ++weeks;
-            }
+            //foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
+            //{
+            //    weekComboBox.Items.Add(week.Key + 1);
+            //    ++weeks;
+            //}
             //default selection to first item/week
             weekComboBox.SelectedIndex = 0;
         }//end DisplayModuleData method
+
+        public async Task<Module> GetModuleByIndex()
+        {
+            Module module = new Module();
+
+            using (cnn)
+            {
+                string query = "SELECT ModuleName, ModuleCode, NumberOfCredits, NumberOfHoursPerWeek, StartDate, SelfStudyHours, CompletedHours FROM Modules WHERE ModuleID = @ModuleID";
+                SqlCommand command = new SqlCommand(query, cnn);
+                command.Parameters.AddWithValue("@ModuleID", moduleID);
+
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        module.ModuleName = (string)reader["ModuleName"];
+                        module.ModuleCode = (string)reader["ModuleCode"];
+                        module.Credits = (int)reader["NumberOfCredits"];
+                        module.ClassHours = (int)reader["NumberOfHoursPerWeek"];
+                        module.SemesterStartDate = (DateTime)reader["StartDate"];
+                        module.SelfStudyHours = (int)reader["SelfStudyHours"];
+                        
+                        //string jsonString = reader["CompletedHours"].ToString();
+                        //JavaScriptSerializer serializer = new JavaScriptSerializer();
+                        //dynamic jsonObject = serializer.Deserialize<dynamic>(jsonString);
+                        //Dictionary<string, double> dictionary = serializer.ConvertToType<Dictionary<string,double>>(jsonObject);
+                        //Dictionary<int, double> intDictionary = dictionary.ToDictionary(pair => int.Parse(pair.Key), pair => pair.Value);
+                        //module.CompletedHours = dictionary;
+
+
+                        //var moduleName = (string)reader["ModuleName"];
+                        //var moduleCode = (string)reader["ModuleCode"];
+                        //var numberOfCredits = (int)reader["NumberOfCredits"];
+                        //var numberOfHoursPerWeek = (int)reader["NumberOfHoursPerWeek"];
+                        //var startDate = (DateTime)reader["StartDate"];
+                        //var selfStudyHours = (int)reader["SelfStudyHours"];
+                        //var completedHours = (string)reader["CompletedHours"];
+
+                    }
+                }
+            }
+
+            return module;
+        }//end GetSelectedModuleData method
 
         //----------------------------------------------------------------------------------------------addHoursButton_Click
 
@@ -180,7 +252,7 @@ namespace prog6212_poe
         private void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
         {
             //open planner module window
-            Window viewModulesWindow = new PlannerModulesWindow(semesters, modules);
+            Window viewModulesWindow = new PlannerModulesWindow(semesterID);
             viewModulesWindow.Show();
             this.Close();
         }//end returnToModulesViewButton_Click method

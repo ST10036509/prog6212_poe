@@ -21,6 +21,7 @@ namespace prog6212_poe
         List<Semester> semesters = new List<Semester>();
         readonly private SqlConnection cnn;
         int userID;
+        List<MySemesterItem> mySemesterItems = new List<MySemesterItem>();
 
         //----------------------------------------------------------------------------------------------Constructors
 
@@ -42,15 +43,15 @@ namespace prog6212_poe
             DisplaySemesters();
         }//end constructor
 
-        //OVERLOADED constructor
-        public PlannerSemestersWindow(List<Semester> semesters)
-        {
-            InitializeComponent();
-            this.semesters = semesters;
+        ////OVERLOADED constructor
+        //public PlannerSemestersWindow(List<Semester> semesters)
+        //{
+        //    InitializeComponent();
+        //    this.semesters = semesters;
 
-            //display semesters in list view
-            DisplaySemesters();
-        }//end OVERLOADED constructor
+        //    //display semesters in list view
+        //    DisplaySemesters();
+        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -85,9 +86,9 @@ namespace prog6212_poe
         //display the semesters in the list view
         public async void DisplaySemesters()        
         {
-            var semesterNames = await Task.Run(() => GetSemesterNames());
+            var semesterData = await Task.Run(() => GetSemesterData());
 
-            semestersListView.ItemsSource = semesterNames;
+            semestersListView.ItemsSource = semesterData;
 
             //foreach (string semesterName in semesterNames)
             //{
@@ -104,14 +105,14 @@ namespace prog6212_poe
             //semestersListView.ItemsSource = myItems;
         }//end DisplaySemsters method 
 
-        public async Task<List<MySemesterItem>> GetSemesterNames()
+        public async Task<List<MySemesterItem>> GetSemesterData()
         {
             //List<string> semesterNames = new List<string>();
-            var myItems = new List<MySemesterItem>();
+            
 
             using (cnn)
             {
-                string query = "SELECT SemesterName FROM Semesters WHERE UserID = @UserID";
+                string query = "SELECT SemesterID, SemesterName FROM Semesters WHERE UserID = @UserID";
                 SqlCommand command = new SqlCommand(query, cnn);
                 command.Parameters.AddWithValue("@UserID", userID);
 
@@ -120,15 +121,16 @@ namespace prog6212_poe
                     while (await reader.ReadAsync())
                     {
                         //semesterNames.Add(reader["SemesterName"].ToString());
-                        myItems.Add(new MySemesterItem
+                        mySemesterItems.Add(new MySemesterItem
                         {
-                            Name = reader["SemesterName"].ToString()
+                            Name = reader["SemesterName"].ToString(),
+                            SemesterID = (int)reader["SemesterID"]
                         });
                     }
                 }
             }
 
-            return myItems;
+            return mySemesterItems;
         }//end GetSemesterNames method
 
         //----------------------------------------------------------------------------------------------MySemesterItem Class
@@ -137,6 +139,7 @@ namespace prog6212_poe
         public class MySemesterItem
         {
             public string Name { get; set; }
+            public int SemesterID { get; set; }
         }//end MySemesterItem class
 
         //----------------------------------------------------------------------------------------------selectSemesterButton_Click
@@ -156,7 +159,7 @@ namespace prog6212_poe
             var index = semestersListView.SelectedIndex;
 
             //open module selection window
-            Window viewModulesWindow = new PlannerModulesWindow(semesters, semesters[index].Modules);
+            Window viewModulesWindow = new PlannerModulesWindow(mySemesterItems[index].SemesterID);
             viewModulesWindow.Show();
             this.Close();
         }//end selectSemesterButton_Click method

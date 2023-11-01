@@ -14,6 +14,10 @@ namespace HoursForYourLib
         private double selfStudyHours;
         private Dictionary<int, double> completedHours;
 
+        public Module()
+        { 
+        }
+
         //constructor
         public Module(string moduleName, string moduleCode, double credits, double classHours, DateTime semesterStartDate)
         {
