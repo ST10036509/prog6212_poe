@@ -35,7 +35,7 @@ namespace HoursForYourLib
                 for (int i = 0; i < weeks; i++)
                 {
                     //add week and default value to dictionary
-                    module.CompletedHours.Add(i, module.SelfStudyHours);
+                    module.CompletedHours.Add(i.ToString(), module.SelfStudyHours);
                 }
             }
 
@@ -51,10 +51,10 @@ namespace HoursForYourLib
             double dayIndex = (date.Subtract(selectedModule.SemesterStartDate).TotalDays) / 7;//calculate an index to check which week the selected date is in
             int key = 0;
             //loop through the weeks
-            foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
+            foreach (KeyValuePair<string, double> week in selectedModule.CompletedHours)
             {
                 //check if the index is within the selected week
-                if (dayIndex >= week.Key + 1)
+                if (dayIndex >= int.Parse(week.Key) + 1)
                 {
                     //skip if it is bigger
                     continue;
@@ -71,7 +71,7 @@ namespace HoursForYourLib
                         selectedModule.CompletedHours[week.Key] = 0;
                     }
 
-                    key = week.Key;
+                    key = int.Parse(week.Key);
                     
                     break;
                 }

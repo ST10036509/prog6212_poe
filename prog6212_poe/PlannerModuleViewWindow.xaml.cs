@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace prog6212_poe
         int weeks = 0;
         int moduleID;
         int semesterID;
-        readonly private SqlConnection cnn;
+        readonly SqlConnection cnn;
 
         //----------------------------------------------------------------------------------------------Constructors
 
@@ -97,7 +98,7 @@ namespace prog6212_poe
         //method to display module data
         public async void DisplayModuleData()
         {
-            var selectedModule = await Task.Run(() => GetModuleByIndex());
+            selectedModule = await Task.Run(() => GetModuleByIndex());
 
             //display module data
             moduleNameTextBlock.Text = selectedModule.ModuleName;
@@ -105,11 +106,11 @@ namespace prog6212_poe
             creditsTextBlock.Text = selectedModule.Credits.ToString();
 
             //display semester data
-            //foreach (KeyValuePair<int, double> week in selectedModule.CompletedHours)
-            //{
-            //    weekComboBox.Items.Add(week.Key + 1);
-            //    ++weeks;
-            //}
+            foreach (KeyValuePair<string, double> week in selectedModule.CompletedHours)
+            {
+                weekComboBox.Items.Add(int.Parse(week.Key) + 1);
+                ++weeks;
+            }
             //default selection to first item/week
             weekComboBox.SelectedIndex = 0;
         }//end DisplayModuleData method
@@ -117,41 +118,25 @@ namespace prog6212_poe
         public async Task<Module> GetModuleByIndex()
         {
             Module module = new Module();
+            string query = "SELECT ModuleName, ModuleCode, NumberOfCredits, NumberOfHoursPerWeek, StartDate, SelfStudyHours, CompletedHours FROM Modules WHERE ModuleID = @ModuleID";
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@ModuleID", moduleID);
 
-            using (cnn)
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
             {
-                string query = "SELECT ModuleName, ModuleCode, NumberOfCredits, NumberOfHoursPerWeek, StartDate, SelfStudyHours, CompletedHours FROM Modules WHERE ModuleID = @ModuleID";
-                SqlCommand command = new SqlCommand(query, cnn);
-                command.Parameters.AddWithValue("@ModuleID", moduleID);
-
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                while (await reader.ReadAsync())
                 {
-                    while (await reader.ReadAsync())
-                    {
-                        module.ModuleName = (string)reader["ModuleName"];
-                        module.ModuleCode = (string)reader["ModuleCode"];
-                        module.Credits = (int)reader["NumberOfCredits"];
-                        module.ClassHours = (int)reader["NumberOfHoursPerWeek"];
-                        module.SemesterStartDate = (DateTime)reader["StartDate"];
-                        module.SelfStudyHours = (int)reader["SelfStudyHours"];
+                    module.ModuleName = (string)reader["ModuleName"];
+                    module.ModuleCode = (string)reader["ModuleCode"];
+                    module.Credits = (int)reader["NumberOfCredits"];
+                    module.ClassHours = (int)reader["NumberOfHoursPerWeek"];
+                    module.SemesterStartDate = (DateTime)reader["StartDate"];
+                    module.SelfStudyHours = (int)reader["SelfStudyHours"];
                         
-                        //string jsonString = reader["CompletedHours"].ToString();
-                        //JavaScriptSerializer serializer = new JavaScriptSerializer();
-                        //dynamic jsonObject = serializer.Deserialize<dynamic>(jsonString);
-                        //Dictionary<string, double> dictionary = serializer.ConvertToType<Dictionary<string,double>>(jsonObject);
-                        //Dictionary<int, double> intDictionary = dictionary.ToDictionary(pair => int.Parse(pair.Key), pair => pair.Value);
-                        //module.CompletedHours = dictionary;
-
-
-                        //var moduleName = (string)reader["ModuleName"];
-                        //var moduleCode = (string)reader["ModuleCode"];
-                        //var numberOfCredits = (int)reader["NumberOfCredits"];
-                        //var numberOfHoursPerWeek = (int)reader["NumberOfHoursPerWeek"];
-                        //var startDate = (DateTime)reader["StartDate"];
-                        //var selfStudyHours = (int)reader["SelfStudyHours"];
-                        //var completedHours = (string)reader["CompletedHours"];
-
-                    }
+                    string jsonString = reader["CompletedHours"].ToString();
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    dynamic jsonObject = serializer.Deserialize<dynamic>(jsonString);
+                    module.CompletedHours = serializer.ConvertToType<Dictionary<string,double>>(jsonObject);
                 }
             }
 
@@ -161,7 +146,7 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------addHoursButton_Click
 
         //add hours to the selected week
-        private void addHoursButton_Click(object sender, RoutedEventArgs e)
+        public async void addHoursButton_Click(object sender, RoutedEventArgs e)
         {
             //local variable declarations:
             double hours = 0;
@@ -206,7 +191,9 @@ namespace prog6212_poe
             var output = calc.IdentifyAndUpdateWeek(date, selectedModule, hoursTextBox.Text);
 
             //update the hours text block
-            hoursCompletedTextBlock.Text = selectedModule.CompletedHours[output.Key] + "/" + selectedModule.SelfStudyHours.ToString();
+            hoursCompletedTextBlock.Text = selectedModule.CompletedHours[output.Key.ToString()] + "/" + selectedModule.SelfStudyHours.ToString();
+
+            await Task.Run(() => UpdateCompletedHours());
 
             //reset the inputs
             selectedDateDatePicker.Text = null;
@@ -217,16 +204,30 @@ namespace prog6212_poe
             //IdentifyAndUpdateWeek(date);
         }//end addHoursButton_Click method
 
+        public async Task UpdateCompletedHours()
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            var jsonCompletedHours = serializer.Serialize(selectedModule.CompletedHours);
+
+            string query = "UPDATE Modules SET CompletedHours = @CompletedHours WHERE ModuleID = @ModuleID;";
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@ModuleID", moduleID);
+            command.Parameters.AddWithValue("@CompletedHours", jsonCompletedHours);
+
+            await command.ExecuteNonQueryAsync();
+
+        }//end UpdateModuleDatabase method
+
         //----------------------------------------------------------------------------------------------weekComboBox_SelectionChanged
 
         //method to update when a new week is selected
-        private void weekComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void weekComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //declare variable to hold selectedWeek
             var selectedWeek = Int32.Parse(weekComboBox.SelectedItem.ToString()) - 1;
 
             //display hours completed
-            hoursCompletedTextBlock.Text = selectedModule.CompletedHours[selectedWeek] + "/" + selectedModule.SelfStudyHours.ToString();
+            hoursCompletedTextBlock.Text = selectedModule.CompletedHours[selectedWeek.ToString()] + "/" + selectedModule.SelfStudyHours.ToString();
 
             //set the datepicker limits to the selected week start and end dates
             selectedDateDatePicker.DisplayDateStart = selectedModule.SemesterStartDate.AddDays(7 * selectedWeek);
@@ -240,7 +241,7 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------_GotFocus
 
         ////reset after hours are added:
-        private void _GotFocus(object sender, RoutedEventArgs e)
+        public void _GotFocus(object sender, RoutedEventArgs e)
         {
             //update visability
             messageTextBlock.Visibility = Visibility.Hidden;
@@ -249,8 +250,10 @@ namespace prog6212_poe
         //----------------------------------------------------------------------------------------------returnToModulesViewButton_Click
 
         //return to modules view page
-        private void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
+        public void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
         {
+            cnn.Close();
+
             //open planner module window
             Window viewModulesWindow = new PlannerModulesWindow(semesterID);
             viewModulesWindow.Show();

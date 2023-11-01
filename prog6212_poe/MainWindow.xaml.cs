@@ -79,6 +79,8 @@ namespace prog6212_poe
         //open semester page
         private void AddSemesterButton_Click(object sender, RoutedEventArgs e)
         {
+            cnn.Close();
+
             //open semester creation window
             Window createSemesterWindow = new SemesterCreationWindow();
             createSemesterWindow.Show();
@@ -95,6 +97,8 @@ namespace prog6212_poe
             //check if there are any semesters
             if (semesterExists)
             {
+                cnn.Close();
+
                 //open planner page
                 Window viewSemestersWindow = new PlannerSemestersWindow();
                 viewSemestersWindow.Show();
@@ -125,6 +129,8 @@ namespace prog6212_poe
         //close program
         private void ExitProgramButton_Click(object sender, RoutedEventArgs e)
         {
+            cnn.Close();
+
             Environment.Exit(0);
         }//end exitProgramButton_Click method
     }

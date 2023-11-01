@@ -12,7 +12,7 @@ namespace HoursForYourLib
         private double classHours;
         private DateTime semesterStartDate;
         private double selfStudyHours;
-        private Dictionary<int, double> completedHours;
+        private Dictionary<string, double> completedHours;
 
         public Module()
         { 
@@ -26,7 +26,7 @@ namespace HoursForYourLib
             this.credits=credits;
             this.classHours=classHours;
             this.SelfStudyHours = 0;
-            this.completedHours = new Dictionary<int, double>();
+            this.completedHours = new Dictionary<string, double>();
             this.semesterStartDate = semesterStartDate;
         }//end constructor
 
@@ -35,7 +35,7 @@ namespace HoursForYourLib
         public string ModuleCode { get => moduleCode; set => moduleCode=value; }
         public double Credits { get => credits; set => credits=value; }
         public double ClassHours { get => classHours; set => classHours=value; }
-        public Dictionary<int, double> CompletedHours { get => completedHours; set => completedHours=value; }
+        public Dictionary<string, double> CompletedHours { get => completedHours; set => completedHours=value; }
         public double SelfStudyHours { get => selfStudyHours; set => selfStudyHours=value; }
         public DateTime SemesterStartDate { get => semesterStartDate; set => semesterStartDate=value; }
     }

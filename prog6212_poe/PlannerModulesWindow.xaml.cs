@@ -161,6 +161,8 @@ namespace prog6212_poe
             //fetch the index of the selected module
             var index = modulesListView.SelectedIndex;
 
+            cnn.Close();
+
             //open module view window
             Window moduleDetailsWindow = new PlannerModuleViewWindow(myModuleItems[index].ModuleID, semesterID);
             moduleDetailsWindow.Show();
@@ -172,6 +174,8 @@ namespace prog6212_poe
         //return to the semester view window
         private void returnToSemesterViewButton_Click(object sender, RoutedEventArgs e)
         {
+            cnn.Close();
+
             //open planner semester window
             Window viewSemestersWindow = new PlannerSemestersWindow();
             viewSemestersWindow.Show();

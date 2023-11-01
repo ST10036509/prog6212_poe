@@ -67,7 +67,6 @@ namespace prog6212_poe
             this.semesterNumberOfWeeks = weeks;
             this.semesterStartDate = date;
             FillTextBoxData();
-
         }//end OVERLOADED constructor
 
         ////OVERLOADED constructor
@@ -126,6 +125,8 @@ namespace prog6212_poe
         {
             //Capture already inputted data to carry over
             CaptureTextBoxData();
+
+            cnn.Close();
 
             //open add module window
             Window addModuleWindow = new AddModuleWindow(modules, semesterName, semesterNumberOfWeeks, semesterStartDate);
@@ -209,6 +210,8 @@ namespace prog6212_poe
                                 //display success message
                                 messageTextBlock.Visibility = Visibility.Visible;
 
+                                cnn.Close();
+
                                 //open main window
                                 Window mainWindow = new MainWindow();
                                 mainWindow.Show();
@@ -236,10 +239,8 @@ namespace prog6212_poe
 
         public async Task AddModuleToDatabase(Module newModule, int semesterID)
         {
-            Dictionary<string, double> stringDictionary = newModule.CompletedHours.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value);
-
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            var jsonCompletedHours = serializer.Serialize(stringDictionary);
+            var jsonCompletedHours = serializer.Serialize(newModule.CompletedHours);
 
             string query = "INSERT INTO Modules (SemesterID, ModuleName, ModuleCode, NumberOfCredits, NumberOfHoursPerWeek, StartDate, SelfStudyHours, CompletedHours) VALUES (@SemesterID, @ModuleName, @ModuleCode, @NumberOfCredits, @NumberOfHoursPerWeek, @StartDate, @SelfStudyHours, @CompletedHours);";
             SqlCommand command = new SqlCommand(query, cnn);
@@ -303,6 +304,8 @@ namespace prog6212_poe
         //return to main home page
         private void ReturnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            cnn.Close();
+
             //open main window
             Window mainWindow = new MainWindow();
             mainWindow.Show();

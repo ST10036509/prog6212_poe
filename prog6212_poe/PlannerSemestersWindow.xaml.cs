@@ -158,6 +158,8 @@ namespace prog6212_poe
             //fetch the index of the selected semester
             var index = semestersListView.SelectedIndex;
 
+            cnn.Close();
+
             //open module selection window
             Window viewModulesWindow = new PlannerModulesWindow(mySemesterItems[index].SemesterID);
             viewModulesWindow.Show();
@@ -169,6 +171,8 @@ namespace prog6212_poe
         //return to Main Menu page
         private void returnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            cnn.Close();
+
             //open main window
             Window mainWindow = new MainWindow();
             mainWindow.Show();
