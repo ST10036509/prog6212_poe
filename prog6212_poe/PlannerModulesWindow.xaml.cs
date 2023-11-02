@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
-using HoursForYourLib;
-using static prog6212_poe.PlannerSemestersWindow;
 
 namespace prog6212_poe
 {
@@ -17,8 +14,6 @@ namespace prog6212_poe
     public partial class PlannerModulesWindow : Window
     {
         //carry over variables:
-        //List<Semester> semesters = new List<Semester>();
-        //List<Module> modules = new List<Module>();
         int semesterID;
         readonly private SqlConnection cnn;
         List<MyModuleItem> myModuleItems = new List<MyModuleItem>();
@@ -48,18 +43,7 @@ namespace prog6212_poe
 
             //display modules in list view
             DisplayModules();
-        }//end constructor
-
-        ////OVERLOADED constructor
-        //public PlannerModulesWindow(List<Semester> semesters, List<Module> modules)
-        //{
-        //    InitializeComponent();
-        //    this.semesters = semesters;
-        //    this.modules = modules;
-
-        //    //display modules in list view
-        //    DisplayModules();
-        //}//end OVERLOADED constructor
+        }//end OVERLOADED DB Constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -95,43 +79,34 @@ namespace prog6212_poe
         //display the modules in the list view
         public async void DisplayModules()
         {
+            //get the module data
             var moduleData = await Task.Run(() => GetModuleData());
-
+            //display the module data in the list view
             modulesListView.ItemsSource = moduleData;
-
-            //create a list of MyModuleItem objects
-            //var myItems = modules.Select(module => new MyModuleItem
-            //{
-            //    Name = module.ModuleName,
-            //    Hours = module.SelfStudyHours.ToString()
-            //}).ToList();
-
-            //display the list of modules in the list view
-            //modulesListView.ItemsSource = myItems;
         }//end DisplayModules method
 
         public async Task<List<MyModuleItem>> GetModuleData()
         {
-            using (cnn)
-            {
-                string query = "SELECT ModuleID, ModuleName, SelfStudyHours FROM Modules WHERE SemesterID = @SemesterID";
-                SqlCommand command = new SqlCommand(query, cnn);
-                command.Parameters.AddWithValue("@SemesterID", semesterID);
+            //create sql query to get the module data
+            string query = "SELECT ModuleID, ModuleName, SelfStudyHours FROM Modules WHERE SemesterID = @SemesterID";
+            //create sql command and set paramter values
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@SemesterID", semesterID);
 
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            //use a sqlreader to capture the module data and place it into a datamodel
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
                 {
-                    while (await reader.ReadAsync())
+                    myModuleItems.Add(new MyModuleItem
                     {
-                        myModuleItems.Add(new MyModuleItem
-                        {
-                            ModuleID = (int)reader["ModuleID"],
-                            Name = reader["ModuleName"].ToString(),
-                            Hours = reader["SelfStudyHours"].ToString()
-                        });
-                    }
+                        ModuleID = (int)reader["ModuleID"],
+                        Name = reader["ModuleName"].ToString(),
+                        Hours = reader["SelfStudyHours"].ToString()
+                    });
                 }
             }
-
+            //return datamodel
             return myModuleItems;
         }//end GetSemesterNames method
 
@@ -161,6 +136,7 @@ namespace prog6212_poe
             //fetch the index of the selected module
             var index = modulesListView.SelectedIndex;
 
+            //close connection
             cnn.Close();
 
             //open module view window
@@ -174,6 +150,7 @@ namespace prog6212_poe
         //return to the semester view window
         private void returnToSemesterViewButton_Click(object sender, RoutedEventArgs e)
         {
+            //close connection
             cnn.Close();
 
             //open planner semester window

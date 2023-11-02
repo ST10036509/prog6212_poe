@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
-using HoursForYourLib;
 
 namespace prog6212_poe
 {
@@ -37,13 +34,6 @@ namespace prog6212_poe
             //open the connection
             cnn.Open();
         }//end constructor
-
-        ////OVERLAODED constructor
-        //public MainWindow(List<Semester> semesters)
-        //{
-        //    InitializeComponent();
-        //    this.semesters = semesters;
-        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -110,6 +100,8 @@ namespace prog6212_poe
                  MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou");
             }
         }//end PlannerBookButton_Click method
+
+        //----------------------------------------------------------------------------------------------VerifySemestersDatabase
 
         public async Task<bool> VerifySemestersDatabase()
         {

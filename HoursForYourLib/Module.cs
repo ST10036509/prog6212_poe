@@ -14,6 +14,7 @@ namespace HoursForYourLib
         private double selfStudyHours;
         private Dictionary<string, double> completedHours;
 
+        //defualt constructor with no parameters
         public Module()
         { 
         }

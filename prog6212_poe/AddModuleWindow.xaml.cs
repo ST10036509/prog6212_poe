@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using HoursForYourLib;
@@ -15,7 +13,6 @@ namespace prog6212_poe
     public partial class AddModuleWindow : Window
     {
         //carry over variables:
-        //private List<Semester> semesters = new List<Semester>();
         private List<Module> modules = new List<Module>();
         private string semesterName;
         private double numberOfWeeks;
@@ -39,18 +36,6 @@ namespace prog6212_poe
             this.numberOfWeeks = weeks;
             this.startDate = date;
         }//end OVERLOADED constructor
-
-        ////OVERLOADED Constructor
-        //public AddModuleWindow(List<Semester> semesters, List<Module> modules,
-        //                       string name, double weeks, DateTime date)
-        //{
-        //    InitializeComponent();
-        //    this.semesters = semesters;
-        //    this.modules = modules;
-        //    this.semesterName = name;
-        //    this.numberOfWeeks = weeks;
-        //    this.startDate = date;
-        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 

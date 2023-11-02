@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -19,8 +17,6 @@ namespace prog6212_poe
     public partial class PlannerModuleViewWindow : Window
     {
         //carry over variables:
-        List<Semester> semesters = new List<Semester>();
-        List<Module> modules = new List<Module>();
         Module selectedModule;
         int weeks = 0;
         int moduleID;
@@ -51,19 +47,9 @@ namespace prog6212_poe
             this.moduleID = moduleID;
             this.semesterID = semesterID;
 
+            //display module data
             DisplayModuleData();
         }//end constructor
-
-
-        ////OVERLOADED constructor
-        //public PlannerModuleViewWindow(List<Semester> semesters, List<Module> modules, Module selectedModule)
-        //{
-        //    InitializeComponent();
-        //    this.semesters = semesters;
-        //    this.modules = modules;
-        //    this.selectedModule = selectedModule;
-        //    DisplayModuleData();
-        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -98,6 +84,7 @@ namespace prog6212_poe
         //method to display module data
         public async void DisplayModuleData()
         {
+            //get the module data
             selectedModule = await Task.Run(() => GetModuleByIndex());
 
             //display module data
@@ -105,7 +92,7 @@ namespace prog6212_poe
             moduleCodeTextBlock.Text = selectedModule.ModuleCode;
             creditsTextBlock.Text = selectedModule.Credits.ToString();
 
-            //display semester data
+            //display module data
             foreach (KeyValuePair<string, double> week in selectedModule.CompletedHours)
             {
                 weekComboBox.Items.Add(int.Parse(week.Key) + 1);
@@ -115,13 +102,19 @@ namespace prog6212_poe
             weekComboBox.SelectedIndex = 0;
         }//end DisplayModuleData method
 
+        //----------------------------------------------------------------------------------------------GetModuleByIndex
+
         public async Task<Module> GetModuleByIndex()
         {
+            //cretae a module datamodel
             Module module = new Module();
+            //sql query to get the module data
             string query = "SELECT ModuleName, ModuleCode, NumberOfCredits, NumberOfHoursPerWeek, StartDate, SelfStudyHours, CompletedHours FROM Modules WHERE ModuleID = @ModuleID";
+            //create sql command and set paramter values
             SqlCommand command = new SqlCommand(query, cnn);
             command.Parameters.AddWithValue("@ModuleID", moduleID);
 
+            //use a sqlreader to capture the module data and place it into a datamodel
             using (SqlDataReader reader = await command.ExecuteReaderAsync())
             {
                 while (await reader.ReadAsync())
@@ -133,13 +126,14 @@ namespace prog6212_poe
                     module.SemesterStartDate = (DateTime)reader["StartDate"];
                     module.SelfStudyHours = (int)reader["SelfStudyHours"];
                         
+                    //convert the json string to a dictionary<string, double>
                     string jsonString = reader["CompletedHours"].ToString();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
                     dynamic jsonObject = serializer.Deserialize<dynamic>(jsonString);
                     module.CompletedHours = serializer.ConvertToType<Dictionary<string,double>>(jsonObject);
                 }
             }
-
+            //return the datamodel
             return module;
         }//end GetSelectedModuleData method
 
@@ -193,6 +187,7 @@ namespace prog6212_poe
             //update the hours text block
             hoursCompletedTextBlock.Text = selectedModule.CompletedHours[output.Key.ToString()] + "/" + selectedModule.SelfStudyHours.ToString();
 
+            //update the database
             await Task.Run(() => UpdateCompletedHours());
 
             //reset the inputs
@@ -201,21 +196,25 @@ namespace prog6212_poe
 
             //update visability
             messageTextBlock.Visibility = Visibility.Visible;
-            //IdentifyAndUpdateWeek(date);
         }//end addHoursButton_Click method
+
+        //----------------------------------------------------------------------------------------------UpdateCompletedHours
 
         public async Task UpdateCompletedHours()
         {
+            //convert the dictionary to a json string
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             var jsonCompletedHours = serializer.Serialize(selectedModule.CompletedHours);
 
+            //sql query to update  selected module data
             string query = "UPDATE Modules SET CompletedHours = @CompletedHours WHERE ModuleID = @ModuleID;";
+            //create sql command and set paramter values
             SqlCommand command = new SqlCommand(query, cnn);
             command.Parameters.AddWithValue("@ModuleID", moduleID);
             command.Parameters.AddWithValue("@CompletedHours", jsonCompletedHours);
 
+            //execute the query
             await command.ExecuteNonQueryAsync();
-
         }//end UpdateModuleDatabase method
 
         //----------------------------------------------------------------------------------------------weekComboBox_SelectionChanged
@@ -252,6 +251,7 @@ namespace prog6212_poe
         //return to modules view page
         public void returnToModulesViewButton_Click(object sender, RoutedEventArgs e)
         {
+            //close connection
             cnn.Close();
 
             //open planner module window

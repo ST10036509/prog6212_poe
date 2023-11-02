@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
-using HoursForYourLib;
 
 
 namespace prog6212_poe
@@ -18,7 +15,6 @@ namespace prog6212_poe
     public partial class PlannerSemestersWindow : Window
     {
         //carry over variables:
-        List<Semester> semesters = new List<Semester>();
         readonly private SqlConnection cnn;
         int userID;
         List<MySemesterItem> mySemesterItems = new List<MySemesterItem>();
@@ -30,6 +26,7 @@ namespace prog6212_poe
         {
             InitializeComponent();
 
+            //fetch the userID of logged in user
             userID = (int)App.Current.Properties["UserID"];
 
             //establish database connection string
@@ -42,16 +39,6 @@ namespace prog6212_poe
 
             DisplaySemesters();
         }//end constructor
-
-        ////OVERLOADED constructor
-        //public PlannerSemestersWindow(List<Semester> semesters)
-        //{
-        //    InitializeComponent();
-        //    this.semesters = semesters;
-
-        //    //display semesters in list view
-        //    DisplaySemesters();
-        //}//end OVERLOADED constructor
 
         //----------------------------------------------------------------------------------------------Remove Exit Button
 
@@ -86,50 +73,35 @@ namespace prog6212_poe
         //display the semesters in the list view
         public async void DisplaySemesters()        
         {
+            //create an new semester DataModel for the selected semester
             var semesterData = await Task.Run(() => GetSemesterData());
 
+            //populate ListView with semester names
             semestersListView.ItemsSource = semesterData;
-
-            //foreach (string semesterName in semesterNames)
-            //{
-            //    semestersListView.Items.Add(new ListViewItem(semesterNames));
-            //}
-
-            //use LINQ to get semester names from the list of semesters
-            //var myItems = semesters.Select(semester => new MySemesterItem
-            //{
-            //    Name = semester.SemesterName,
-            //}).ToList();
-
-            ////add names to list view
-            //semestersListView.ItemsSource = myItems;
         }//end DisplaySemsters method 
 
         public async Task<List<MySemesterItem>> GetSemesterData()
         {
-            //List<string> semesterNames = new List<string>();
-            
+            //create a sql query to get the semester data
+            string query = "SELECT SemesterID, SemesterName FROM Semesters WHERE UserID = @UserID";
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@UserID", userID);
 
-            using (cnn)
+            //use a sqlreader to capture the semester data and place it into a datamodel
+            using (SqlDataReader reader = await command.ExecuteReaderAsync())
             {
-                string query = "SELECT SemesterID, SemesterName FROM Semesters WHERE UserID = @UserID";
-                SqlCommand command = new SqlCommand(query, cnn);
-                command.Parameters.AddWithValue("@UserID", userID);
-
-                using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                while (await reader.ReadAsync())
                 {
-                    while (await reader.ReadAsync())
+                    //semesterNames.Add(reader["SemesterName"].ToString());
+                    mySemesterItems.Add(new MySemesterItem
                     {
-                        //semesterNames.Add(reader["SemesterName"].ToString());
-                        mySemesterItems.Add(new MySemesterItem
-                        {
-                            Name = reader["SemesterName"].ToString(),
-                            SemesterID = (int)reader["SemesterID"]
-                        });
-                    }
+                        Name = reader["SemesterName"].ToString(),
+                        SemesterID = (int)reader["SemesterID"]
+                    });
                 }
             }
 
+            //return the datamodel
             return mySemesterItems;
         }//end GetSemesterNames method
 
@@ -158,6 +130,7 @@ namespace prog6212_poe
             //fetch the index of the selected semester
             var index = semestersListView.SelectedIndex;
 
+            //close connection
             cnn.Close();
 
             //open module selection window
@@ -171,6 +144,7 @@ namespace prog6212_poe
         //return to Main Menu page
         private void returnToMainMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            //close connection
             cnn.Close();
 
             //open main window

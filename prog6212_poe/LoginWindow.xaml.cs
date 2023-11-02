@@ -1,19 +1,9 @@
-﻿using HoursForYourLib;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace prog6212_poe
 {
@@ -32,7 +22,8 @@ namespace prog6212_poe
             InitializeComponent();
 
             //store the connection string in the application properties
-            App.Current.Properties["ConnectionString"] = @"Data Source=LAPTOP-OMEN;Initial Catalog=HoursForYouDB;Integrated Security=True";
+            //App.Current.Properties["ConnectionString"] = @"Data Source=LAPTOP-OMEN;Initial Catalog=HoursForYouDB;Integrated Security=True";
+            App.Current.Properties["ConnectionString"] = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename=|DataDirectory|\HoursForYouDB.mdf; Integrated Security = True; Connect Timeout = 30";
 
             //establish database connection string
             var connectionString = App.Current.Properties["ConnectionString"] as String;
