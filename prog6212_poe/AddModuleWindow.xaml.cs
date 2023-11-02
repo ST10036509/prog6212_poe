@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 using HoursForYourLib;
 
 namespace prog6212_poe
@@ -84,7 +85,10 @@ namespace prog6212_poe
             if (moduleNameTextBox.Text == "" || moduleCodeTextBox.Text == "" || numberOfCreditsTextBox.Text == "" || classHoursPerWeekTextBox.Text == "")
             {
                 //error message if fields are empty
-                MessageBox.Show("Please Fill In All The Fields!", "HoursForYou");
+                //display error message
+                messageTextBlock.Text = "Please Fill In All The Fields!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
             }
             else
             {
@@ -92,7 +96,10 @@ namespace prog6212_poe
                 if (moduleCreditsIsParsable == false)
                 {
                     //error message if credits is not a number
-                    MessageBox.Show("Please Make Sure Your CREDITS Is A Valid Number!", "HoursForYou");
+                    //display error message
+                    messageTextBlock.Text = "CREDITS Must Be A Valid Number!";
+                    messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    messageTextBlock.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -100,19 +107,30 @@ namespace prog6212_poe
                     if (moduleHoursIsParsable == false)
                     {
                         //error message if hours is not a number
-                        MessageBox.Show("Please Make Sure Your CLASS HOURS Is A Valid Number!", "HoursForYou");
+                        //display error message
+                        messageTextBlock.Text = "HOURS Must Be A Valid Number!";
+                        messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                        messageTextBlock.Visibility = Visibility.Visible;
                     }
                     else
                     {
                         if (hours < 0)
                         {
-                            MessageBox.Show("Please Ensure The Hours Is A POSITIVE Number!", "HoursForYou");
+                            //error message if hours is not a positive number
+                            //display error message
+                            messageTextBlock.Text = "HOURS Must Be A POSITIVE!";
+                            messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                            messageTextBlock.Visibility = Visibility.Visible;
                         }
                         else
                         {
                             if (credits < 0)
                             {
-                                MessageBox.Show("Please Ensure The Credits Is A POSITIVE Number!", "HoursForYou");
+                                //error message if credits is not a positive number
+                                //display error message
+                                messageTextBlock.Text = "CREDIT MUST BE POSITIVE!";
+                                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                                messageTextBlock.Visibility = Visibility.Visible;
                             }
                             else
                             {
@@ -128,6 +146,8 @@ namespace prog6212_poe
                                 classHoursPerWeekTextBox.Text = "";
 
                                 //display success message
+                                messageTextBlock.Text = "Successfully Added A Module!";
+                                messageTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                                 messageTextBlock.Visibility = Visibility.Visible;
                             }
                         }

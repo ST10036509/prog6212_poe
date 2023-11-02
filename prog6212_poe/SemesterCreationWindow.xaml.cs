@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 using HoursForYourLib;
 
 namespace prog6212_poe
@@ -134,7 +135,10 @@ namespace prog6212_poe
             if (semesterNameTextBox.Text == "" || numberOfWeeksTextBox.Text == "" || startDateDatePicker.Text == "")
             {
                 //error message if fields are empty
-                MessageBox.Show("Please Fill In All The Fields!", "HoursForYou");
+                //display error message
+                messageTextBlock.Text = "Please Fill In All The Fields!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
             }
             else
             {
@@ -142,7 +146,10 @@ namespace prog6212_poe
                 if (semesterWeeksIsParsable == false)
                 {
                     //error message if weeks is not a number
-                    MessageBox.Show("Please Make Sure Your Number of Weeks Is A Number!", "HoursForYou");
+                    //display error message
+                    messageTextBlock.Text = "Number of Weeks Must Be A Number!";
+                    messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    messageTextBlock.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -150,7 +157,10 @@ namespace prog6212_poe
                     if (semesterStartDateIsParsable == false)
                     {
                         //error message if start date is not a datetime
-                        MessageBox.Show("Please Make Sure Your START DATE Is A Valid Date!", "HoursForYou");
+                        //display error message
+                        messageTextBlock.Text = "START DATE Must Be A Valid Date!";
+                        messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                        messageTextBlock.Visibility = Visibility.Visible;
                     }
                     else
                     {
@@ -158,7 +168,10 @@ namespace prog6212_poe
                         if (modules.Count() < 1)
                         {
                             //error message if there are no modules
-                            MessageBox.Show("Please Make Sure You Add At Least ONE Module Before Proceeding!", "HoursForYou");
+                            //display error message
+                            messageTextBlock.Text = "Please Add At Least ONE Module!";
+                            messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                            messageTextBlock.Visibility = Visibility.Visible;
                         }
                         else
                         {
@@ -166,7 +179,10 @@ namespace prog6212_poe
                             if (weeks <= 0)
                             {
                                 //error message if weeks is not a positive number
-                                MessageBox.Show("Please Make Sure Your Number of Weeks Is A Positive Number And Not ZERO!", "HoursForYou");
+                                //display error message
+                                messageTextBlock.Text = "Number of Weeks Must Be POSITIVE And Not ZERO!";
+                                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                                messageTextBlock.Visibility = Visibility.Visible;
                             }
                             else
                             {
@@ -191,6 +207,8 @@ namespace prog6212_poe
                                 startDateDatePicker.Text = "";
 
                                 //display success message
+                                messageTextBlock.Text = "Semester Created Successfully!";
+                                messageTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                                 messageTextBlock.Visibility = Visibility.Visible;
 
                                 //close connection

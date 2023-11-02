@@ -123,7 +123,7 @@ namespace prog6212_poe
             if (!(semestersListView.SelectedIndex >= 0))
             {
                 //error message if no semester is selected
-                MessageBox.Show("No Semester Selected!");
+                messageTextBlock.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -138,6 +138,14 @@ namespace prog6212_poe
             viewModulesWindow.Show();
             this.Close();
         }//end selectSemesterButton_Click method
+
+        //----------------------------------------------------------------------------------------------semestersListView_SelectionChanged
+
+        private void semestersListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            //hide error message
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end semestersListView_SelectionChanged method
 
         //----------------------------------------------------------------------------------------------returnToMainMenuButton_Click
 

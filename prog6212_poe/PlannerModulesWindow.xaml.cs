@@ -129,7 +129,7 @@ namespace prog6212_poe
             if (!(modulesListView.SelectedIndex >= 0))
             {
                 //error message if no module is selected
-                MessageBox.Show("No Module Selected!");
+                messageTextBlock.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -144,6 +144,14 @@ namespace prog6212_poe
             moduleDetailsWindow.Show();
             this.Close();
         }//end selectModuleButton_Click method
+
+        //----------------------------------------------------------------------------------------------modulesListView_SelectionChanged
+
+        private void modulesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            //hide error message
+            messageTextBlock.Visibility = Visibility.Hidden;
+        }//end modulesListView_SelectionChanged method
 
         //----------------------------------------------------------------------------------------------returnToSemesterViewButton_Click
 

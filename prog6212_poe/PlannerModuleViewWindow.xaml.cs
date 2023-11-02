@@ -7,6 +7,7 @@ using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 using HoursForYourLib;
 
 namespace prog6212_poe
@@ -152,7 +153,9 @@ namespace prog6212_poe
             if (!hoursIsParsable)
             {
                 //error message if hours is not valid
-                MessageBox.Show("Please Ensure Hours Is A Valid Number!");
+                messageTextBlock.Text = "HOURS Must Be A Valid Number!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
                 return;
             }
             
@@ -160,7 +163,9 @@ namespace prog6212_poe
             if (!dateIsParsable)
             {
                 //error message if date is not valid
-                MessageBox.Show("Please Ensure Date Is A Valid Date!");
+                messageTextBlock.Text = "DATE Must Be A Valid Date!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -168,7 +173,9 @@ namespace prog6212_poe
             if ((hoursTextBox.Text == "") || (selectedDateDatePicker.Text == ""))
             {
                 //error message if either are null
-                MessageBox.Show("Please Ensure You Fill Out All Data Fields!");
+                messageTextBlock.Text = "Fill Out All Data Fields!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -176,7 +183,9 @@ namespace prog6212_poe
             if (hours < 0)
             {
                 //error message if hours is negative
-                MessageBox.Show("Please Ensure Hours Is A POSITIVE Number!");
+                messageTextBlock.Text = "HOURS Must Be POSITIVE!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -194,7 +203,9 @@ namespace prog6212_poe
             selectedDateDatePicker.Text = null;
             hoursTextBox.Text = null;
 
-            //update visability
+            //display success message
+            messageTextBlock.Text = "Successfully Added Your Hours!";
+            messageTextBlock.Foreground = new SolidColorBrush(Colors.Green);
             messageTextBlock.Visibility = Visibility.Visible;
         }//end addHoursButton_Click method
 

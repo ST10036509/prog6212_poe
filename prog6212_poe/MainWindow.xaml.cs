@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace prog6212_poe
 {
@@ -87,6 +88,7 @@ namespace prog6212_poe
             //check if there are any semesters
             if (semesterExists)
             {
+                //close connection
                 cnn.Close();
 
                 //open planner page
@@ -96,8 +98,10 @@ namespace prog6212_poe
             }
             else
             {
-                //error message
-                 MessageBox.Show("Please make sure you create at least ONE semester before proceeding!", "HoursForYou");
+                //display error message
+                messageTextBlock.Text = "Please make sure you create at least ONE semester before proceeding!";
+                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                messageTextBlock.Visibility = Visibility.Visible;
             }
         }//end PlannerBookButton_Click method
 
@@ -105,15 +109,12 @@ namespace prog6212_poe
 
         public async Task<bool> VerifySemestersDatabase()
         {
-            using (cnn)
-            {
-                string query = "SELECT COUNT(*) FROM Semesters WHERE UserID = @UserID;";
-                SqlCommand command = new SqlCommand(query, cnn);
-                command.Parameters.AddWithValue("@UserID", userID);
+            string query = "SELECT COUNT(*) FROM Semesters WHERE UserID = @UserID;";
+            SqlCommand command = new SqlCommand(query, cnn);
+            command.Parameters.AddWithValue("@UserID", userID);
 
-                int semesterCount = (int)await command.ExecuteScalarAsync();
-                return semesterCount > 0;
-            }
+            int semesterCount = (int)await command.ExecuteScalarAsync();
+            return semesterCount > 0;
         }//end VerifySemestersDatabase method
 
         //----------------------------------------------------------------------------------------------ExitProgramButton_Click

@@ -167,7 +167,7 @@
             Click="AddModleButton_Click" Cursor="Hand"
         />
         
-        <!--Add Success Message TextBox-->
+        <!--Add Message TextBox-->
         <TextBlock
             x:Name="messageTextBlock"
             Grid.Column="2" Grid.Row="12"

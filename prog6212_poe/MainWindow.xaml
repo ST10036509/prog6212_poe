@@ -70,7 +70,20 @@
             BorderThickness="0"
             Click="PlannerBookButton_Click" Cursor="Hand"
         />
-
+        
+        <!-- Message TextBox-->
+        <TextBlock
+            x:Name="messageTextBlock"
+            Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3"
+            Text="Semester Created Successfully!"
+            HorizontalAlignment="Center"
+            FontWeight="Bold"
+            FontSize="15"
+            Margin="0,30,0,0"
+            Foreground="Red"
+            Visibility="Hidden"
+        />
+        
         <!-- Exit Program Button-->
         <Button x:Name="exitProgramButton" 
             Grid.Column="2" Grid.Row="4" 
