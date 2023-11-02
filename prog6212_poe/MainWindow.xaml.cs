@@ -14,7 +14,6 @@ namespace prog6212_poe
     public partial class MainWindow : Window
     {
         //carry over variables:
-        //private List<Semester> semesters = new List<Semester>();
         int userID;
         readonly private SqlConnection cnn;
 
@@ -109,10 +108,13 @@ namespace prog6212_poe
 
         public async Task<bool> VerifySemestersDatabase()
         {
+            //sql query to check if a user exists
             string query = "SELECT COUNT(*) FROM Semesters WHERE UserID = @UserID;";
+            //create a new command and add parameter values
             SqlCommand command = new SqlCommand(query, cnn);
             command.Parameters.AddWithValue("@UserID", userID);
 
+            //execute the query and return the result
             int semesterCount = (int)await command.ExecuteScalarAsync();
             return semesterCount > 0;
         }//end VerifySemestersDatabase method
@@ -122,6 +124,7 @@ namespace prog6212_poe
         //close program
         private void ExitProgramButton_Click(object sender, RoutedEventArgs e)
         {
+            //close connection
             cnn.Close();
 
             Environment.Exit(0);
