@@ -51,31 +51,6 @@ namespace prog6212_poe
             return count > 0;//return true if the username exists and false if it doesnt
         }//end CheckIfUsernameExists method
 
-        //----------------------------------------------------------------------------------------------usernameTextBox_TextChanged
-
-        private async void usernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //capture username
-            string username = usernameTextBox.Text;
-
-            //check if the username exists in the database as te user types
-            usernameExists = await Task.Run(() => CheckIfUsernameExists(username));
-
-            //if it exsists
-            if (usernameExists)
-            {
-                //display error message
-                messageTextBlock.Text = "USERNAME Is Unavaliable!";
-                messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-                messageTextBlock.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                //clear error message
-                messageTextBlock.Visibility = Visibility.Hidden;
-            }
-        }//end usernameTextBox_TextChanged method
-
         //----------------------------------------------------------------------------------------------confirmationPasswordTextBox_TextChanged
 
         private void confirmationPasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -99,6 +74,8 @@ namespace prog6212_poe
 
         private async void registerButton_Click(object sender, RoutedEventArgs e)
         {
+            string testUsername = usernameTextBox.Text;
+
             //if username exists
             if ( (usernameExists) )
             {
@@ -131,8 +108,17 @@ namespace prog6212_poe
                 messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
                 messageTextBlock.Visibility = Visibility.Visible;
             }
+            if ((await Task.Run(() => CheckIfUsernameExists(testUsername))) )
+            {
+                    //display error message
+                    messageTextBlock.Text = "USERNAME Is Unavaliable!";
+                    messageTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    messageTextBlock.Visibility = Visibility.Visible;
+            }
             else
             {
+                messageTextBlock.Visibility = Visibility.Hidden;
+
                 //capture username and password
                 string username = usernameTextBox.Text;
                 string password = passwordTextBox.Text;

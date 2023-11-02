@@ -109,7 +109,7 @@
             FontWeight="DemiBold"
             Height="29"
             BorderThickness="0.7"
-            TextChanged="usernameTextBox_TextChanged"
+            
         />
 
         <!-- Password TextBlock and TextBox -->
