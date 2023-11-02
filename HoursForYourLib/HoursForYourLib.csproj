@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Calculations.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="PasswordHandler.cs" />
     <Compile Include="Semester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

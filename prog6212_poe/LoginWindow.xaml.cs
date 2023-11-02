@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using HoursForYourLib;
 
 namespace prog6212_poe
 {
@@ -56,7 +57,8 @@ namespace prog6212_poe
             else
             {
                 //validate entered password
-                var validPassword = await Task.Run(() => ValidatePassword(dbPassword, password));
+                PasswordHandler handler = new PasswordHandler();
+                var validPassword = await Task.Run(() => handler.ValidatePassword(dbPassword, password));
 
                 //if the password isnt valid
                 if (!validPassword)
@@ -81,35 +83,6 @@ namespace prog6212_poe
                 }
             }
         }//end loginButton_Click method
-
-        //----------------------------------------------------------------------------------------------ValidatePassword
-
-        public async Task<bool> ValidatePassword(string dbPassword, string userPassword)
-        {
-            //dewcode the password string to bytes
-            byte[] dbHashBytes = Convert.FromBase64String(dbPassword);
-
-            //extract the salt from the password hash
-            byte[] salt = new byte[20];
-            Array.Copy(dbHashBytes, 0, salt, 0, 20);
-
-            //use the ectracted salt to encrypt the given password into a has byte sequence
-            var pbkdf2 = new System.Security.Cryptography.Rfc2898DeriveBytes(userPassword, salt, 10000);
-            byte[] enteredHash = pbkdf2.GetBytes(20);
-
-            //comapre the two hash sequences byte by byte
-            for (int i = 0; i < 20; i++)
-            {
-                //if any byte is different, the passwords do not match
-                if (dbHashBytes[i + 20] != enteredHash[i])
-                {
-                    //fault out
-                    return false;
-                }
-            }
-            //if all bytes match, the passwords are the same
-            return true;
-        }//end ValidatePassword method
 
         //----------------------------------------------------------------------------------------------GetPasswordForUsername
 

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
+using HoursForYourLib;
 
 namespace prog6212_poe
 {
@@ -137,7 +138,8 @@ namespace prog6212_poe
                 string password = passwordTextBox.Text;
 
                 //encrypt password
-                var hashedPassword = await Task.Run(() => EncryptPassword(password));
+                PasswordHandler handler = new PasswordHandler();
+                var hashedPassword = await Task.Run(() => handler.EncryptPassword(password));
 
                 //add user to database
                 var userID = await Task.Run(() => AddUser(username, hashedPassword));
@@ -153,29 +155,6 @@ namespace prog6212_poe
                 this.Close();
             }
         }//end registerButton_Click method
-
-        //----------------------------------------------------------------------------------------------EncryptPassword
-
-        //using PBKDF2 to encrypt the password with SALTING
-        public async Task<string> EncryptPassword(string password)
-        {
-            //create the salt (20 bytes long) for password encryption and decryption using cryptographic PRNG
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[20]);
-
-            //create the Rfc2898DeriveBytes
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            //get the hash value (20 bytes long)
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            //combine the salt with the hash starting with the salt
-            byte[] saltedHashBytes = new byte[40];
-            Array.Copy(salt, 0, saltedHashBytes, 0, 20);//past from index 0 -- 20
-            Array.Copy(hash, 0, saltedHashBytes, 20, 20);//paste from index 20 -- 40
-
-            //return a string of the salt+hash in base64 format for storage
-            return Convert.ToBase64String(saltedHashBytes);
-        }//end EncryptPassword method
 
         //----------------------------------------------------------------------------------------------AddUser
 
