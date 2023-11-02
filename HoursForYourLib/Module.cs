@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace HoursForYourLib
 {
+    /// <summary>
+    /// only class in namespace
+    /// </summary>
     public class Module
     {
         //declare fields:
