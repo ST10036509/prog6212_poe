@@ -23,8 +23,8 @@ namespace prog6212_poe
             InitializeComponent();
 
             //store the connection string in the application properties
-            //App.Current.Properties["ConnectionString"] = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename=|DataDirectory|\HoursForYouDB.mdf; Integrated Security = True; Connect Timeout = 30";
-            App.Current.Properties["ConnectionString"] = "Server=tcp:dbserver-vc-cldv6212-st10036509.database.windows.net,1433; Initial Catalog = db-vc-prog6212-st10036509-part-2; Persist Security Info=False; User ID = ST10036509; Password=Randomsangh72; MultipleActiveResultSets=False; Encrypt=True; TrustServerCertificate=False; Connection Timeout = 30;";
+            App.Current.Properties["ConnectionString"] = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename=|DataDirectory|\HoursForYouDB.mdf; Integrated Security = True; Connect Timeout = 30";
+            //App.Current.Properties["ConnectionString"] = "Server=tcp:dbserver-vc-cldv6212-st10036509.database.windows.net,1433; Initial Catalog = db-vc-prog6212-st10036509-part-2; Persist Security Info=False; User ID = ST10036509; Password=Randomsangh72; MultipleActiveResultSets=False; Encrypt=True; TrustServerCertificate=False; Connection Timeout = 30;";
             //establish database connection string
             var connectionString = App.Current.Properties["ConnectionString"] as String;
 

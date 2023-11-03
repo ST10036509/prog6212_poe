@@ -166,6 +166,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="bin\Debug\prog6212_poe.exe.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -175,6 +176,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\assets\databases\" />
     <Folder Include="css\" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +200,18 @@
   <ItemGroup>
     <Content Include="assets\sounds\added_sfx.mp3" />
     <Content Include="assets\sounds\added_sfx.wav" />
+    <Content Include="bin\Debug\HoursForYouDB.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\HoursForYouDB_log.ldf">
+      <DependentUpon>HoursForYouDB.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\HoursForYouLib.dll" />
+    <Content Include="bin\Debug\HoursForYourLib.dll" />
+    <Content Include="bin\Debug\HoursForYourLib.pdb" />
+    <Content Include="bin\Debug\prog6212_poe.exe" />
+    <Content Include="bin\Debug\prog6212_poe.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
